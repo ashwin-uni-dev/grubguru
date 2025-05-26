@@ -1,8 +1,9 @@
-import { CategoryProcessor, FoodItemProcessor, StoreProcessor } from "./processors";
+import { StoreProcessor } from "./processors/simpleProcessors";
+import { FoodItemProcessor } from "./processors/foodItemProcessor";
 import { Scraper } from "./scraper";
 
 const LOCATION_URL = 'https://www.ubereats.com/gb/neighborhood/south-kensington-london-eng';
-const scraper = new Scraper();
+const scraper = Scraper.create();
 
 (async () => {
   const storeProcessor = new StoreProcessor(scraper);

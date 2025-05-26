@@ -36,7 +36,7 @@ export class Scraper {
         await page.setUserAgent(userAgent);
         await page.setViewport({ width: 1280, height: 800 });
         
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
         
         return page;
     }
