@@ -1,11 +1,10 @@
 import { PageProcessor } from './pageProcessor';
 
-
 interface RawFoodData {
     name?: string
     price?: string
     desc?: string
-    img?: string
+    imgUrl?: string
     uberUrl: string
 }
 
@@ -28,18 +27,19 @@ const getStoreData = (storeJson: any) => {
 }
 
 const processFoodItem = (rawFoodInfo: RawFoodData) => {
-    const { name, price, desc, img, uberUrl } = rawFoodInfo;
+    const { name, price, desc, imgUrl, uberUrl } = rawFoodInfo;
+    const priceAsNumber = Number(price?.trim().replace('£', ''));
 
-    if (!price || !price.includes("£")) {
+    if (!priceAsNumber) {
         return {};
     }
 
     return {
         name: name?.trim() || '',
-        price: price.trim(),
+        price: priceAsNumber,
         description: (desc && desc.length >= 15) ? desc.trim() : '',
-        imageUrl: img,
-        uberUrl: uberUrl,
+        imgUrl,
+        uberUrl,
     };
 };
 
@@ -59,13 +59,12 @@ export class FoodItemProcessor extends PageProcessor {
                     name: (priceSpan && spans[spans.indexOf(priceSpan) - 1])?.textContent || undefined,
                     price: priceSpan?.textContent || undefined,
                     desc: spans.length > 0 ? spans[spans.length - 1]?.textContent || undefined : undefined,
-                    img: a.querySelector('img')?.src || undefined,
+                    imgUrl: a.querySelector('img')?.src || undefined,
                     uberUrl: a.href,
                 };
             }
 
             const rawFoodItemData: RawFoodData[] = anchorContainers.map(getFoodInfo);
-
             return { storeJson, rawFoodItemData }
         });
 
