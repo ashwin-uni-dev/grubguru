@@ -1,4 +1,4 @@
-import { PageProcessor } from './pageProcessor';
+import { StorePageProcessor } from './storePageProcessor';
 
 interface RawFoodData {
     name?: string
@@ -9,22 +9,6 @@ interface RawFoodData {
 }
 
 const isObjectEmpty = (o: any) => Object.keys(o).length == 0;
-
-const getStoreData = (storeJson: any) => {
-    const { name, servesCuisine, openingHoursSpecification } = storeJson;
-    const { longitude, latitude } = storeJson.geo;
-    const { streetAddress: address, postalCode: postcode } = storeJson.address;
-
-    return {
-        name,
-        longitude,
-        latitude,
-        servesCuisine,
-        address,
-        postcode,
-        openingHoursSpecification
-    }
-}
 
 const processFoodItem = (rawFoodInfo: RawFoodData) => {
     const { name, price, desc, imgUrl, uberUrl } = rawFoodInfo;
@@ -44,15 +28,16 @@ const processFoodItem = (rawFoodInfo: RawFoodData) => {
 };
 
 // Fetches store info and food items from a store page
-export class FoodItemProcessor extends PageProcessor {
+export class FoodItemProcessor extends StorePageProcessor {
     async processStrategy(page: any): Promise<any[]> {
-        const { storeJson, rawFoodItemData } = await page.evaluate(() => {
-            const storeJson = JSON.parse(document.querySelector('[data-testid="store-loaded"] script')?.textContent || '{}');
+        const rawFoodItemData = await page.evaluate(() => {
             const anchorContainers = Array.from(document.querySelectorAll('a'));
 
             const getFoodInfo = (a: HTMLAnchorElement) => {
                 const spans = Array.from(a.querySelectorAll('span'));
-                const priceIndex = spans.findIndex(span => span.textContent?.includes("£"));
+                const priceIndex = spans.findIndex(span => span.textContent
+                    ?.includes("£"));
+
                 const priceSpan = spans[priceIndex];
 
                 return {
@@ -64,18 +49,14 @@ export class FoodItemProcessor extends PageProcessor {
                 };
             }
 
-            const rawFoodItemData: RawFoodData[] = anchorContainers.map(getFoodInfo);
-            return { storeJson, rawFoodItemData }
+            return anchorContainers.map(getFoodInfo);
         });
-
-        const storeData = getStoreData(storeJson);
-        if (isObjectEmpty(storeData)) return [];
 
         return rawFoodItemData.flatMap((item: RawFoodData) => {
             const foodInfo = processFoodItem(item);
             if (isObjectEmpty(foodInfo)) return [];
 
-            return { ...foodInfo, storeData };
+            return { ...foodInfo, storeUrl: this.storeUrl };
         });
     }
 }

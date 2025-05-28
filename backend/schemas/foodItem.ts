@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-import { storeSchema, IStore } from './store';
 
 export interface IFoodItem extends Document {
     name: string;
@@ -7,7 +6,7 @@ export interface IFoodItem extends Document {
     desc: string;
     imgUrl: string;
     uberUrl: string;
-    storeData: IStore;
+    storeUrl: string,
 }
 
 
@@ -17,7 +16,7 @@ const foodItemSchema = new Schema({
     desc: String,
     imgUrl: String,
     uberUrl: String,
-    storeData: storeSchema
+    storeUrl: String,
 })
 
 export const FoodItem = model<IFoodItem>('FoodItem', foodItemSchema);

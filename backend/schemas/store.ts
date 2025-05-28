@@ -1,6 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-export interface IStore {
+export interface IStore extends Document {
+    storeUrl: string;
     name: string;
     longitude: number;
     latitude: number;
@@ -11,6 +12,7 @@ export interface IStore {
 }
 
 export const storeSchema = new Schema({
+    storeUrl: String,
     name: String,
     longitude: Number,
     latitude: Number,
@@ -19,3 +21,5 @@ export const storeSchema = new Schema({
     postcode: String,
     openingHoursSpecification: [{}]
 });
+
+export const Store = model<IStore>('Store', storeSchema);
