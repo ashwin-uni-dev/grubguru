@@ -21,7 +21,7 @@ const processFoodItem = (rawFoodInfo: RawFoodData) => {
     return {
         name: name?.trim() || '',
         price: priceAsNumber,
-        description: (desc && desc.length >= 15) ? desc.trim() : '',
+        desc: (desc && desc.length >= 15) ? desc.trim() : '',
         imgUrl,
         uberUrl,
     };
@@ -39,11 +39,23 @@ export class FoodItemProcessor extends StorePageProcessor {
                     ?.includes("£"));
 
                 const priceSpan = spans[priceIndex];
+                const otherSpans = spans.filter(span => span !== priceSpan);
+
+                let longestDescSpan: HTMLSpanElement | undefined;
+                let longestLength = 0;
+
+                otherSpans.forEach(span => {
+                    const text = span.textContent || '';
+                    if (text.length > longestLength) {
+                        longestLength = text.length;
+                        longestDescSpan = span;
+                    }
+                });
 
                 return {
                     name: (priceSpan && spans[spans.indexOf(priceSpan) - 1])?.textContent || undefined,
                     price: priceSpan?.textContent || undefined,
-                    desc: spans.length > 0 ? spans[spans.length - 1]?.textContent || undefined : undefined,
+                    desc: longestDescSpan?.textContent || undefined, // Use the longest span's textContent
                     imgUrl: a.querySelector('img')?.src || undefined,
                     uberUrl: a.href,
                 };
