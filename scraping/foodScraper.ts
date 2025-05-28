@@ -5,6 +5,8 @@ import {SimpleLogger} from "./loggers/simpleLogger";
 import {MongoLogger} from "./loggers/mongoLogger";
 import {FoodItem, IFoodItem} from "./schemas/foodItem";
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const LOCATION_URL = 'https://www.ubereats.com/gb/neighborhood/south-kensington-london-eng';
 const scraper = Scraper.create();
@@ -12,7 +14,7 @@ const errorLogger = new SimpleLogger();
 const resultLogger = new MongoLogger<IFoodItem>(FoodItem);
 
 (async () => {
-  await mongoose.connect('mongodb+srv://ab4623:!!Cricket123!!@grubguru.yn7aupf.mongodb.net/?retryWrites=true&w=majority&appName=grubguru');
+  await mongoose.connect(process.env.MONGO_URI || '');
 
   const storeProcessor = new StoreProcessor(scraper, errorLogger, errorLogger);
   const foodItemProcessor = new FoodItemProcessor(scraper, errorLogger, resultLogger);
