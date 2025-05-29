@@ -28,9 +28,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Install Root Dependencies # Installs dependencies for the entire monorepo
-      run: npm install
-
     - name: Build Backend
       run: |
         cd backend
