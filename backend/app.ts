@@ -14,10 +14,7 @@ app.use('/foods', FoodsRouter);
 app.use('/users', UsersRouter)
 
 app.get('/', (req, res) => {
-    res.send({ message: 'server is working' })
+    res.send({ message: 'server is worsadjasdjking' })
 })
-
-const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Server listening on port ${port}.`));
 
 export default app;
