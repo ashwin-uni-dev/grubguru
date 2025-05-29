@@ -1,4 +1,7 @@
-const BACKEND_BASE = 'http://localhost:8080'
+import dotenv from 'dotenv';
+dotenv.config();
+
+const BACKEND_BASE = process.env.BACKEND_BASE;
 
 export class BackendRequest {
     private method: string = '';
