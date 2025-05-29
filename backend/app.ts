@@ -14,7 +14,7 @@ app.use('/foods', FoodsRouter);
 app.use('/users', UsersRouter)
 
 app.get('/', (req, res) => {
-    res.send({ message: 'server is alive' })
+    res.send({ message: 'server is working' })
 })
 
 const port = process.env.PORT || 8080;
