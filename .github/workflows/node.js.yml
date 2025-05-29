@@ -37,9 +37,6 @@ jobs:
         npm install
         npm run build
 
-    - name: Install Vercel CLI
-      run: npm install -g vercel
-
     - name: Deploy Backend to Vercel # Deploys the pre-built backend
       run: |
         cd backend
