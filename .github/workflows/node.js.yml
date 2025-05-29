@@ -36,4 +36,4 @@ jobs:
     - name: Deploy Backend to Vercel # Deploys the pre-built backend
       run: |
         cd backend
-        npx vercel --prod
+        npx vercel deploy --prod --yes
