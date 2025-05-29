@@ -36,7 +36,7 @@ jobs:
     - name: Deploy Backend to Vercel # Deploys the pre-built backend
       run: |
         cd backend
-        npx vercel deploy --prod --yes --token ${{ secrets.VERCEL_TOKEN }}
+        npx vercel deploy --prod --prebuilt --yes --token ${{ secrets.VERCEL_TOKEN }}
 
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
