@@ -37,7 +37,17 @@ const Home = () => {
                 <div className='grid grid-cols-2 gap-4 mt-4 flex-wrap'>
                     {
                         foods.map((food: any, index) => (
-                            <FoodCard {...food} />
+                            index < 3 && <FoodCard {...food} />
+                        ))
+                    }
+                </div>
+            </div>
+            <div className='mt-8'>
+                <h1 className='text-2xl font-bold tracking-tighter'>Your Favourites</h1>
+                <div className='grid grid-cols-2 gap-4 mt-4 flex-wrap'>
+                    {
+                        foods.map((food: any, index) => (
+                            index >= 3 && <FoodCard {...food} />
                         ))
                     }
                 </div>
