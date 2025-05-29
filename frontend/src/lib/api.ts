@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-const BACKEND_BASE = process.env.BACKEND_BASE;
+const BACKEND_BASE = process.env.REACT_APP_BACKEND_BASE;
 
 export class BackendRequest {
     private method: string = '';
