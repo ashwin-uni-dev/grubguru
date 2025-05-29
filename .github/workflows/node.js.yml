@@ -27,15 +27,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build Backend
+    - name: Build & Deploy Backend
       run: |
         cd backend
         npm install
         npm run build
-
-    - name: Deploy Backend to Vercel # Deploys the pre-built backend
-      run: |
-        cd backend
         npx vercel deploy --prod --prebuilt --yes --token ${{ secrets.VERCEL_TOKEN }}
 
       env:
