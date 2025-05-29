@@ -13,6 +13,9 @@ app.use(cors());
 app.use('/foods', FoodsRouter);
 app.use('/users', UsersRouter)
 
+app.get('/', (req, res) => {
+    res.send({ message: 'server is alive' })
+})
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server listening on port ${port}.`));
