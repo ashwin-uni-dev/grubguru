@@ -1,27 +1,48 @@
 import React from 'react';
 import PresetCard from "./components/PresetCard";
 import {usePresets} from "./hooks/usePresets";
+import {useFoods} from "./hooks/useFoods";
+import FoodCard from "../../components/FoodCard";
+import {useNavigate} from "react-router-dom";
+import Layout from "../../components/Layout";
 
 const Home = () => {
-    const { presets, setPresets } = usePresets();
+    const { presets } = usePresets();
+    const { foods } = useFoods();
+    let navigate = useNavigate();
 
     return (
-        <div className='flex flex-col lg:w-3/4 sm:w-full p-8 gap-8'>
+        <Layout back={false}>
             <div>
                 <h1 className='text-2xl font-bold tracking-tighter'>Your Preferences</h1>
                 <div className='flex gap-4 mt-4 overflow-x-auto'>
-                    <PresetCard name='+' color='purple' />
+                    <div
+                        className='bg-purple-500 p-4 rounded-lg text-white text-xs flex flex-col items-center justify-center'
+                        onClick={() => navigate('/preset')}
+                    >
+                        <p className='text-lg'>+</p>
+                    </div>
                     {
                         presets.map((preset: any, index) => (
-                            <PresetCard key={index} name={preset.name} color='red' />
+                            <PresetCard
+                                key={index} name={preset.name} color='blue'
+                                onClick={() => navigate('/food')}
+                            />
                         ))
                     }
                 </div>
             </div>
-            <div>
+            <div className='mt-8'>
                 <h1 className='text-2xl font-bold tracking-tighter'>Suggested For You</h1>
+                <div className='grid grid-cols-2 gap-4 mt-4 flex-wrap'>
+                    {
+                        foods.map((food: any, index) => (
+                            <FoodCard {...food} />
+                        ))
+                    }
+                </div>
             </div>
-        </div>
+        </Layout>
     )
 }
 

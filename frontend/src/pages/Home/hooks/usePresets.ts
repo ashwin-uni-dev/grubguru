@@ -17,5 +17,5 @@ export const usePresets = () => {
         fetchPresets();
     }, [])
 
-    return { presets, setPresets };
+    return { presets };
 }

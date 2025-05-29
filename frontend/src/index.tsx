@@ -1,15 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Routes, Route } from "react-router";
+import Home from './pages/Home';
+import Food from './pages/Food';
+import Preset from "./pages/Preset";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path='/food' element={<Food />} />
+              <Route path='/preset' element={<Preset />} />
+          </Routes>
+      </BrowserRouter>
   </React.StrictMode>
 );
 
