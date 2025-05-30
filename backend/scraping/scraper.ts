@@ -4,6 +4,25 @@ import randomUseragent from 'random-useragent';
 
 puppeteer.use(StealthPlugin());
 
+async function autoScroll(page: any) {
+    await page.evaluate(async () => {
+        await new Promise((resolve) => {
+            let totalHeight = 0;
+            const distance = 100;
+            const timer = setInterval(() => {
+                const scrollHeight = document.body.scrollHeight;
+                window.scrollBy(0, distance);
+                totalHeight += distance;
+
+                if (totalHeight >= scrollHeight - window.innerHeight) {
+                    clearInterval(timer);
+                    resolve(true);
+                }
+            }, 100);
+        });
+    });
+}
+
 export class Scraper {
     private browser: any;
 
@@ -35,8 +54,10 @@ export class Scraper {
         const page = await this.browser.newPage();
         await page.setUserAgent(userAgent);
         await page.setViewport({ width: 1280, height: 800 });
-        
+
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
+        await autoScroll(page);
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
         return page;
     }

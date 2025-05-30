@@ -1,10 +1,42 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import FoodInfoModal from "./FoodInfoModal";
 
 const FoodCard = ({ food }: { food: any }) => {
     const { imgUrl, name, price, desc, uberUrl } = food;
-    const { name: storeName } = food.storeInfo;
+    const { name: storeName, longitude, latitude } = food.storeInfo;
     const [isOpen, setIsOpen] = useState(false);
+    const [walkingTime, setWalkingTime] = useState<string | null>(null);
+
+    // Haversine formula
+    const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+        const R = 6371; // km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) ** 2 +
+            Math.cos(lat1 * Math.PI / 180) *
+            Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) ** 2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in km
+    };
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLat = position.coords.latitude;
+                const userLon = position.coords.longitude;
+
+                const distKm = calculateDistance(userLat, userLon, latitude, longitude);
+
+                const minutes = Math.round((distKm / 5) * 60);
+                setWalkingTime(`${minutes} min walk`);
+            },
+            () => {
+                setWalkingTime('Distance unavailable');
+            }
+        );
+    }, [latitude, longitude]);
 
     return (
         <>
@@ -19,11 +51,13 @@ const FoodCard = ({ food }: { food: any }) => {
 
                 <div className='flex-grow p-4 flex flex-col justify-between'>
                     <div>
-                        <p className='text-xs text-gray-700 truncate'>{ storeName }</p>
-                        <p className='text-lg font-bold tracking-tighter'>{ name }</p>
-                        <p className='text-sm text-gray-700'>£{ price }</p>
+                        <p className='text-xs text-gray-700 truncate'>{storeName}</p>
+                        <p className='text-lg font-bold tracking-tighter'>{name}</p>
+                        <p className='text-sm text-gray-700'>£{price}</p>
                     </div>
-                    <p className='text-xs text-neutral-600 line-clamp-2'>{ desc }</p>
+                    <p className='text-xs text-purple-600 italic'>
+                        {walkingTime || 'Calculating...'}
+                    </p>
                 </div>
             </div>
 
@@ -33,7 +67,7 @@ const FoodCard = ({ food }: { food: any }) => {
                 food={food}
             />
         </>
-    )
+    );
 };
 
 export default FoodCard;

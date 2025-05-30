@@ -37,6 +37,8 @@ const storeLogger = new MongoLogger<IStore>(Store);
       processor.setStoreUrl(storeUrl)
       await processor.process(storeUrl);
     }
+
+    console.log('processed: ', storeUrl);
   }
 
   await scraper.close();
