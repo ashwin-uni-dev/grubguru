@@ -14,7 +14,7 @@ const Home = () => {
     return (
         <Layout back={false}>
             <div>
-                <h1 className='text-2xl font-bold tracking-tighter'>Hello Jason</h1>
+                <h1 className='text-2xl font-bold tracking-tighter'>Your Preferences</h1>
                 <div className='flex gap-4 mt-4 overflow-x-auto'>
                     <div
                         className='bg-purple-500 p-4 rounded-lg text-white text-xs flex flex-col items-center justify-center'
