@@ -13,7 +13,7 @@ const Food = () => {
                 <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-4 mt-4'>
                     {
                         foods.map((food: any, index) => (
-                            <FoodListItem {...food} key={index} />
+                            <FoodListItem food={food} key={index} />
                         ))
                     }
                 </div>

@@ -1,0 +1,32 @@
+import React from 'react';
+
+interface FoodInfoModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    food: any
+}
+
+const FoodInfoModal = ({ food, isOpen, onClose }: FoodInfoModalProps) => {
+    const { imgUrl, name, price, desc, uberUrl } = food;
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+            <div className="bg-white p-4 rounded shadow-lg min-w-[300px] relative">
+                <button
+                    onClick={onClose}
+                    className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                >
+                    ✕
+                </button>
+                {imgUrl && <img src={imgUrl} alt={name} className="w-full h-40 object-cover rounded mb-4" />}
+                {name && <h2 className="text-xl font-bold mb-2">{name}</h2>}
+                {price !== undefined && <p className="text-sm text-gray-700 mb-2">£{price}</p>}
+                {desc && <p className="text-sm text-gray-600">{desc}</p>}
+                <a href={uberUrl} className='text-sm text-purple-500 underline'>View on Uber Eats</a>
+            </div>
+        </div>
+    );
+};
+
+export default FoodInfoModal;
