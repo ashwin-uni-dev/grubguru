@@ -10,7 +10,11 @@ export const usePresets = () => {
             .get()
             .execute();
 
-        setPresets(fetchedPresets);
+        const localPresets = JSON.parse(localStorage.getItem('presets') || '[]')
+            .map((preset: string) => ({name: preset}));
+
+        // @ts-ignore
+        setPresets([...fetchedPresets, ...localPresets]);
     }
 
     useEffect(() => {

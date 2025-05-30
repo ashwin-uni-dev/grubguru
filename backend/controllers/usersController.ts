@@ -9,8 +9,6 @@ export class UsersController {
         res.send({
             presets: [
                 {name: 'Hot & Spicy'},
-                {name: 'Cheap & Quick'},
-                {name: 'High Protein Veggie'}
             ]
         })
     }

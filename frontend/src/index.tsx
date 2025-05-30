@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Home from './pages/Home';
 import Food from './pages/Food';
 import Preset from "./pages/Preset";
+import Mood from './pages/Preset/Mood';
+import PreferenceRoutesWrapper from './pages/Preset/preferenceWrapper';
+import Budget from './pages/Preset/Budget';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +19,11 @@ root.render(
           <Routes>
               <Route path="/" element={<Home />} />
               <Route path='/food' element={<Food />} />
-              <Route path='/preset' element={<Preset />} />
+              <Route path="/preset" element={<PreferenceRoutesWrapper />}>
+                  <Route index element={<Preset />} />
+                  <Route path="mood" element={<Mood />} />
+                  <Route path="budget" element={<Budget />} />
+              </Route>
           </Routes>
       </BrowserRouter>
   </React.StrictMode>
