@@ -1,4 +1,5 @@
 import React from 'react';
+import { Store, MapPin } from 'lucide-react';
 
 interface FoodInfoModalProps {
     isOpen: boolean;
@@ -8,6 +9,9 @@ interface FoodInfoModalProps {
 
 const FoodInfoModal = ({ food, isOpen, onClose }: FoodInfoModalProps) => {
     const { imgUrl, name, price, desc, uberUrl } = food;
+    const { name: storeName, longitude, latitude, address } = food.storeInfo;
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+
     if (!isOpen) return null;
 
     return (
@@ -23,7 +27,18 @@ const FoodInfoModal = ({ food, isOpen, onClose }: FoodInfoModalProps) => {
                 {name && <h2 className="text-xl font-bold mb-2">{name}</h2>}
                 {price !== undefined && <p className="text-sm text-gray-700 mb-2">£{price}</p>}
                 {desc && <p className="text-sm text-gray-600">{desc}</p>}
-                <a href={uberUrl} className='text-sm text-purple-500 underline'>View on Uber Eats</a>
+                <div className='flex items-center gap-2 text-gray-600 my-4 text-sm'>
+                    <Store size={16}/>
+                    <span>{ storeName }</span>
+                </div>
+                <div className='flex items-center gap-2 text-gray-600 my-4 text-sm'>
+                    <MapPin  size={16}/>
+                    <span>{ address }</span>
+                </div>
+                <div className='flex flex-col text-sm text-purple-500 underline'>
+                    <a href={uberUrl}>View on Uber Eats</a>
+                    <a href={googleMapsUrl}>Directions on Google Maps</a>
+                </div>
             </div>
         </div>
     );

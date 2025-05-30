@@ -3,6 +3,7 @@ import FoodInfoModal from "./FoodInfoModal";
 
 const FoodCard = ({ food }: { food: any }) => {
     const { imgUrl, name, price, desc, uberUrl } = food;
+    const { name: storeName } = food.storeInfo;
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -18,6 +19,7 @@ const FoodCard = ({ food }: { food: any }) => {
 
                 <div className='flex-grow p-4 flex flex-col justify-between'>
                     <div>
+                        <p className='text-xs text-gray-700 truncate'>{ storeName }</p>
                         <p className='text-lg font-bold tracking-tighter'>{ name }</p>
                         <p className='text-sm text-gray-700'>£{ price }</p>
                     </div>
