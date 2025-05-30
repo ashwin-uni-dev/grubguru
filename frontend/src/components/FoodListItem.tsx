@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FoodInfoModal from "./FoodInfoModal";
 
-const FoodCard = ({ food }: { food: any }) => {
+const FoodListItem = ({ food }: { food: any }) => {
     const { imgUrl, name, price, desc, uberUrl } = food;
     const { name: storeName, longitude, latitude } = food.storeInfo;
     const [isOpen, setIsOpen] = useState(false);
@@ -70,4 +70,4 @@ const FoodCard = ({ food }: { food: any }) => {
     );
 };
 
-export default FoodCard;
+export default FoodListItem;
