@@ -2,7 +2,8 @@ import Layout from "../../components/Layout";
 import React, { useState } from "react"; // Import useState
 import { usePreferences } from "./contexts/preferenceContext";
 import {useNavigate} from "react-router-dom";
-import PreferenceCard from "./components/PreferenceCard"; // Assuming this path is correct
+import PreferenceCard from "./components/PreferenceCard";
+import {BackendRequest} from "../../lib/api"; // Assuming this path is correct
 
 const Preset = () => {
     const navigate = useNavigate();
@@ -13,10 +14,12 @@ const Preset = () => {
         setSelectedPreferenceId(event.target.value.toLowerCase());
     };
 
-    const handleDone = () => {
-        const existingPresets = JSON.parse(localStorage.getItem('presets') || '[]');
-        const updatedPresets = [...existingPresets, presetName];
-        localStorage.setItem('presets', JSON.stringify(updatedPresets));
+    const handleDone = async () => {
+        const presetInfo = { id: presetName, preferences };
+        await BackendRequest.to('users/1/presets')
+            .post(presetInfo)
+            .execute();
+
         navigate('/');
     };
 

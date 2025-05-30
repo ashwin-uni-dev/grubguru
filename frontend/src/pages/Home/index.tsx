@@ -25,7 +25,7 @@ const Home = () => {
                     {
                         presets.map((preset: any, index) => (
                             <PresetCard
-                                key={index} name={preset.name} color='blue'
+                                key={index} name={preset.id} color='blue'
                                 onClick={() => navigate('/food')}
                             />
                         ))
