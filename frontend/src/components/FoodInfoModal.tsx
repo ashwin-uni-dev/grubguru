@@ -15,8 +15,8 @@ const FoodInfoModal = ({ food, isOpen, onClose }: FoodInfoModalProps) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-            <div className="bg-white p-4 rounded shadow-lg min-w-[300px] relative">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" onClick={onClose}>
+            <div className="bg-white p-4 rounded shadow-lg min-w-[300px] relative" onClick={(e) => e.stopPropagation()}>
                 <button
                     onClick={onClose}
                     className="absolute top-2 right-2 text-gray-500 hover:text-black"

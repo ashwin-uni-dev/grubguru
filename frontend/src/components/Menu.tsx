@@ -2,26 +2,26 @@ import React from 'react';
 import { Home, History, Settings } from 'lucide-react';
 import {useNavigate} from "react-router-dom";
 
-const Footer = () => {
+const Menu = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-black text-white p-4 z-50">
-            <nav className="flex justify-around items-center h-full">
+        <div className="w-full bg-gray-100 p-4 z-50">
+            <nav className="flex justify-around items-cente">
                 <button className="flex flex-col items-center text-sm" onClick={() => navigate('/')}>
-                    <Home size={12} strokeWidth={1} />
+                    <Home strokeWidth={2} color='gray'/>
                 </button>
 
                 <button className="flex flex-col items-center text-sm">
-                    <History size={12} strokeWidth={1} />
+                    <History strokeWidth={2} color='gray' />
                 </button>
 
                 <button className="flex flex-col items-center text-sm">
-                    <Settings size={12} strokeWidth={1} />
+                    <Settings strokeWidth={2} color='gray' />
                 </button>
             </nav>
         </div>
     );
 };
 
-export default Footer;
+export default Menu;

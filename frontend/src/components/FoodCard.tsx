@@ -8,8 +8,8 @@ const FoodCard = ({ food }: { food: any}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <>
-            <div className='flex flex-col overflow-hidden h-56 w-full' onClick={() => setIsOpen(true)}>
+        <div>
+            <div className='flex flex-col w-full overflow-hidden h-56' onClick={() => setIsOpen(true)}>
                 <div className='h-32 w-full rounded-lg border flex justify-center items-center bg-gray-100 overflow-hidden'>
                     <img
                         src={imgUrl}
@@ -32,7 +32,7 @@ const FoodCard = ({ food }: { food: any}) => {
                 onClose={() => setIsOpen(false)}
                 food={food}
             />
-        </>
+        </div>
     )
 };
 
