@@ -8,13 +8,8 @@ export class FoodController {
 
     constructor(private foodService: FoodService) {}
 
-    async searchFoods(req: Request, res: Response) {
-        const query = req.query.q as string;
-        const foods = await this.foodService.searchFoods(query);
-        res.send(foods);
-    }
     async getFoods(req: Request, res: Response) {
-        const foods = await this.foodService.getFoods();
+        const foods = await this.foodService.getFoods(req.body);
         res.send(foods);
     }
 }

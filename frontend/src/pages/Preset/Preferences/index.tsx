@@ -31,7 +31,7 @@ const Preferences = () => {
                     }
                 </div>
                 <p className="text-sm text-gray-500 mt-4">
-                    Your preferences will be shown below.
+                    Your chosen preferences will be shown below.
                 </p>
                 {
                     preferences.map((preference: any, index) => (

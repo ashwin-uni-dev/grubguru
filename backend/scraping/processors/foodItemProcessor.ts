@@ -5,6 +5,7 @@ interface RawFoodData {
     price?: string
     desc?: string
     imgUrl?: string
+    kcal?: string
     uberUrl: string
 }
 
@@ -23,6 +24,7 @@ const processFoodItem = (rawFoodInfo: RawFoodData) => {
         price: priceAsNumber,
         desc: (desc && desc.length >= 15) ? desc.trim() : '',
         imgUrl,
+        kcal: rawFoodInfo.kcal ? Number(rawFoodInfo.kcal.trim().replace('kcal', '')) : undefined,
         uberUrl,
     };
 };
@@ -37,8 +39,11 @@ export class FoodItemProcessor extends StorePageProcessor {
                 const spans = Array.from(a.querySelectorAll('span'));
                 const priceIndex = spans.findIndex(span => span.textContent
                     ?.includes("£"));
+                const kcalIndex = spans.findIndex(span => span.textContent
+                    ?.includes("kcal"));
 
                 const priceSpan = spans[priceIndex];
+                const kcalSpan = spans[kcalIndex];
                 const otherSpans = spans.filter(span => span !== priceSpan);
 
                 let longestDescSpan: HTMLSpanElement | undefined;
@@ -57,6 +62,7 @@ export class FoodItemProcessor extends StorePageProcessor {
                     price: priceSpan?.textContent || undefined,
                     desc: longestDescSpan?.textContent || undefined, // Use the longest span's textContent
                     imgUrl: a.querySelector('img')?.src || undefined,
+                    kcal: kcalSpan?.textContent || undefined,
                     uberUrl: a.href,
                 };
             }
