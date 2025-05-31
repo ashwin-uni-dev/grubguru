@@ -7,6 +7,8 @@ import Layout from "../../components/Layout";
 import HorizontalSection from "../../components/HorizontalSection";
 import Badge from '../../components/Badge';
 import Search from "../../components/Search";
+import FoodCardSkeleton from "../../components/skeletons/FoodCardSkeleton";
+import BadgeSkeleton from "../../components/skeletons/BadgeSkeleton";
 
 const Home = () => {
     const { presets } = usePresets();
@@ -21,25 +23,27 @@ const Home = () => {
                     <p className='font-bold text-xl'>+</p>
                 </Badge>
                 {
-                    presets.map((preset: any, index) => (
+                    presets.length ? presets.map((preset: any, index) => (
                         <Badge key={index} onClick={() => navigate('/food')}>
                             <p className='text-sm'>{ preset.id }</p>
                         </Badge>
-                    ))
+                    )) : (
+                        <><BadgeSkeleton/><BadgeSkeleton/><BadgeSkeleton/></>
+                    )
                 }
             </HorizontalSection>
             <HorizontalSection title='Suggested For You'>
                 {
-                    foods.map((food: any, index) => (
+                    foods.length ? foods.map((food: any, index) => (
                         <FoodCard food={food} />
-                    ))
+                    )) : <FoodCardSkeleton />
                 }
             </HorizontalSection>
             <HorizontalSection title='Your Favourites'>
                 {
-                    foods.map((food: any, index) => (
+                    foods.length ? foods.map((food: any, index) => (
                         <FoodCard food={food} />
-                    ))
+                    )) : <FoodCardSkeleton />
                 }
             </HorizontalSection>
         </Layout>

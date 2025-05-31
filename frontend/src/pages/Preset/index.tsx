@@ -8,8 +8,9 @@ import Badge from "../../components/Badge";
 
 const Preset = () => {
     const navigate = useNavigate();
-    const { preferences, presetName, setPresetName } = usePreferences();
+    const { presetName, setPresetName } = usePreferences();
     const suggestions = ["Lunch Prep", "Weeknight Quick", "Low Carb"];
+
     return (
         <Layout back={false}>
             <ProgressivePage title="New Preset" action={() => navigate('preferences')}>

@@ -4,6 +4,7 @@ import React from "react";
 import PreferenceCard from "./components/PreferenceCard";
 import {useNavigate} from "react-router-dom";
 import {usePreferences} from "../contexts/preferenceContext";
+import { BackendRequest } from "../../../lib/api";
 
 const Preferences = () => {
     const navigate = useNavigate();
@@ -14,11 +15,23 @@ const Preferences = () => {
         { name: 'Nutrition', icon: 'leaf' },
     ]
 
-    const { preferences } = usePreferences();
+    const { preferences, presetName } = usePreferences();
+
+    const handleDone = () => {
+        BackendRequest
+            .to('/users/1/presets')
+            .post({
+                id: presetName,
+                preferences
+            })
+            .execute()
+
+        navigate('/');
+    }
 
     return (
         <Layout back={true}>
-            <ProgressivePage title='Setup Your Preferences' action={() => navigate('/')} final={true}>
+            <ProgressivePage title='Setup Your Preferences' action={() => handleDone()} final={true}>
                 <p className="font-medium mt-4">Choose your preferences</p>
                 <div className='grid grid-cols-2 gap-4 mt-2'>
                     {

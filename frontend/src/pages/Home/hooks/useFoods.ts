@@ -7,7 +7,7 @@ export const useFoods = () => {
     const fetchFoods = async () => {
         const foods = await BackendRequest
             .to('foods')
-            .get()
+            .post({})
             .execute();
 
         setFoods(foods);
