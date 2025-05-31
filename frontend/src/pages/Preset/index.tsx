@@ -1,71 +1,47 @@
 import Layout from "../../components/Layout";
-import React, { useState } from "react"; // Import useState
+import React from "react"; // Import useState
 import { usePreferences } from "./contexts/preferenceContext";
 import {useNavigate} from "react-router-dom";
-import PreferenceCard from "./components/PreferenceCard";
-import {BackendRequest} from "../../lib/api"; // Assuming this path is correct
+import Input from "../../components/Input";
+import ProgressivePage from "../../components/ProgressivePage";
+import Badge from "../../components/Badge";
 
 const Preset = () => {
     const navigate = useNavigate();
     const { preferences, presetName, setPresetName } = usePreferences();
-    const [selectedPreferenceId, setSelectedPreferenceId] = useState<string>('');
-
-    const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedPreferenceId(event.target.value.toLowerCase());
-    };
-
-    const handleDone = async () => {
-        const presetInfo = { id: presetName, preferences };
-        await BackendRequest.to('users/1/presets')
-            .post(presetInfo)
-            .execute();
-
-        navigate('/');
-    };
-
+    const suggestions = ["Lunch Prep", "Weeknight Quick", "Low Carb"];
     return (
         <Layout back={false}>
-            <h1 className='text-2xl font-bold tracking-tighter'>New Preset</h1>
-            <div className='h-3/4 flex flex-col'>
-                <div>
-                    <label htmlFor="preference-select" className="block text-gray-700 text-sm font-bold mb-2">
-                        Enter your preset name:
-                    </label>
-                    <input
-                        id="preset-name"
-                        value={presetName}
-                        onChange={(e) => setPresetName(e.target.value)}
-                        placeholder='Preset name...'
-                        className="w-full p-2 border border-gray-300 rounded-lg"
-                    />
+            <ProgressivePage title="New Preset" action={() => navigate('preferences')}>
+                <span className="font-medium">Preset name</span>
+                <Input
+                    placeholder="Enter your preset name..."
+                    value={presetName}
+                    onChange={(e:any) => setPresetName(e.target.value)}
+                />
+                <p className="text-xs text-right text-gray-400 mt-1">
+                    {presetName.length}/30 characters
+                </p>
 
-                    <label htmlFor="preference-select" className="block text-gray-700 text-sm font-bold mt-4 mb-2">
-                        Choose a preference to set:
-                    </label>
-                        <select
-                            id="preference-select"
-                            value={selectedPreferenceId}
-                            onChange={handleSelectChange}
-                            className="block w-full p-2 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">-- Select an option --</option>
-                            <option value="mood">Mood</option>
-                            <option value="budget">Budget</option>
-                            <option value="time">Time</option>
-                            <option value="nutrition">Nutrition</option>
-                        </select>
-                    <button className='text-purple-500 text-sm font-semibold'
-                            onClick={() => navigate(selectedPreferenceId)}>Set Preference</button>
+                <p className="text-sm text-gray-500 mt-4">
+                    Choose a name that describes when or how you’ll use this preset.
+                </p>
+
+                <div className="mt-6">
+                    <p className="text-sm font-semibold mb-2">Suggestions:</p>
+                    <div className="flex flex-wrap gap-2">
+                        {suggestions.map((name) => (
+                            <Badge
+                                key={name}
+                                onClick={() => setPresetName(name)}
+                            >
+                                <p className='text-sm'>{name}</p>
+                            </Badge>
+                        ))}
+                    </div>
                 </div>
-                <div className='flex flex-col mt-4 gap-2'>
-                    { preferences.map((preference, index) => (
-                        <PreferenceCard preference={preference} key={index} />
-                    ))}
-                </div>
-                <div className='mt-auto self-end pt-4 text-purple-500 font-bold cursor-pointer' onClick={handleDone}>
-                    Done
-                </div>
-            </div>
+            </ProgressivePage>
+
         </Layout>
     );
 }

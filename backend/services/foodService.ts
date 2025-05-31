@@ -10,6 +10,38 @@ export class FoodService {
         private foodItemModel: Model<IFoodItem>
     ) {}
 
+    async searchFoods(query: string): Promise<IFoodItem[]> {
+        try {
+            return await this.foodItemModel.aggregate([
+                { $search: {
+                        index: "default",
+                        text: {
+                            query: query,
+                            path: ["name", "desc"],
+                            fuzzy: {}
+                        }
+                    } },
+                {
+                    $sample: { size: 20 } // Randomly select 20 documents
+                },
+                {
+                    $lookup: {
+                        from: 'stores',
+                        localField: 'storeUrl',
+                        foreignField: 'storeUrl',
+                        as: 'storeInfo'
+                    }
+                },
+                {
+                    $unwind: '$storeInfo'
+                }
+            ]);
+        } catch (error) {
+            console.error('Error fetching foods:', error);
+            throw new Error('Failed to retrieve food items.');
+        }
+    }
+
     async getFoods(): Promise<IFoodItem[]> {
         try {
             return await this.foodItemModel.aggregate([

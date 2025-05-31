@@ -9,6 +9,7 @@ import Preset from "./pages/Preset";
 import Mood from './pages/Preset/Mood';
 import PreferenceRoutesWrapper from './pages/Preset/preferenceWrapper';
 import Budget from './pages/Preset/Budget';
+import Preferences from "./pages/Preset/Preferences";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +22,7 @@ root.render(
               <Route path='/food' element={<Food />} />
               <Route path="/preset" element={<PreferenceRoutesWrapper />}>
                   <Route index element={<Preset />} />
+                  <Route path="preferences" element={<Preferences />} />
                   <Route path="mood" element={<Mood />} />
                   <Route path="budget" element={<Budget />} />
               </Route>

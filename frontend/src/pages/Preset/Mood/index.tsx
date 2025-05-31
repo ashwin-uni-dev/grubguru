@@ -1,8 +1,8 @@
 import Layout from "../../../components/Layout";
 import React, { useState } from "react";
 import { usePreferences } from "../contexts/preferenceContext";
-import {useNavigate} from "react-router-dom"; // Assuming your context is in 'contexts' folder
-import DonePreference from "../components/donePreference";
+import {useNavigate} from "react-router-dom";
+import ProgressivePage from "../../../components/ProgressivePage";
 
 const Mood = () => {
     const navigate = useNavigate();
@@ -24,11 +24,17 @@ const Mood = () => {
         });
     };
 
+    const handleDone = () => {
+        addOrUpdatePreference({ id: 'mood', value: selectedMoods });
+        navigate('../preferences');
+    }
+
     return (
         <Layout back={true}>
-            <div className='flex flex-col h-full'>
-                <h1 className='text-2xl font-bold tracking-tighter text-gray-800'>What are you in the mood for?</h1>
-                <DonePreference id='mood' value={selectedMoods}  />
+            <ProgressivePage title='Mood' action={handleDone} final={true}>
+                <p className="text-sm text-gray-500 mt-2">
+                    Select the taste you are in the mood for.
+                </p>
                 <div className='flex-grow grid grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-4 gap-4 mb-8 overflow-y-auto'>
                     {moodOptions.map(mood => (
                         <button
@@ -46,7 +52,7 @@ const Mood = () => {
                         </button>
                     ))}
                 </div>
-            </div>
+            </ProgressivePage>
         </Layout>
     );
 }
