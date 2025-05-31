@@ -6,7 +6,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const Badge = ({ children, ...rest }: Props) => {
     return (
-        <div className='flex min-w-10 h-10 bg-gray-100 p-2 rounded-full justify-center items-center' {...rest}>
+        <div className='flex h-10 bg-gray-100 px-4 py-2 rounded-full justify-center items-center whitespace-nowrap' {...rest}>
             { children }
         </div>
     )

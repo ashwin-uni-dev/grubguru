@@ -1,5 +1,4 @@
-// src/context/PreferencesContext.tsx
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 export interface UserPreference {
     id: string;
@@ -13,7 +12,8 @@ interface PreferencesContextType {
     addOrUpdatePreference: (newOrUpdatedPreference: UserPreference) => void;
 }
 
-const initialPreferences: UserPreference[] = [];
+const STORAGE_KEY = 'userPreferences';
+const PRESET_NAME_KEY = 'presetName';
 
 export const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
 
@@ -26,8 +26,28 @@ export const usePreferences = () => {
 };
 
 export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [preferences, setPreferences] = useState<UserPreference[]>(initialPreferences);
-    const [presetName, setPresetName] = useState<string>('');
+    const [preferences, setPreferences] = useState<UserPreference[]>(() => {
+        const storedPrefs = localStorage.getItem(STORAGE_KEY);
+        if (storedPrefs) {
+            try {
+                return JSON.parse(storedPrefs);
+            } catch {
+                return [];
+            }
+        }
+    });
+
+    const [presetName, setPresetName] = useState<string>(() => {
+        return localStorage.getItem(PRESET_NAME_KEY) || '';
+    });
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences));
+    }, [preferences]);
+
+    useEffect(() => {
+        localStorage.setItem(PRESET_NAME_KEY, presetName);
+    }, [presetName]);
 
     const addOrUpdatePreference = (newOrUpdatedPreference: UserPreference) => {
         setPreferences(prevPreferences => {
