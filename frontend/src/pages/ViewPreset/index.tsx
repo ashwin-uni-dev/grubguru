@@ -4,13 +4,13 @@ import FoodListItem from '../../components/FoodListItem';
 import Layout from "../../components/Layout";
 import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
 
-const Food = () => {
-    const { foods } = useFoods();
+const ViewPreset = () => {
+    const { presetName, foods } = useFoods();
 
     return (
         <Layout back={true}>
             <div>
-                <h1 className='text-2xl font-bold tracking-tighter'>Your Food</h1>
+                <h1 className='text-2xl font-bold tracking-tighter'>{ presetName }</h1>
                 <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-4 mt-4'>
                     {
                         foods.length ? foods.map((food: any, index) => (
@@ -25,4 +25,4 @@ const Food = () => {
     )
 }
 
-export default Food;
+export default ViewPreset;

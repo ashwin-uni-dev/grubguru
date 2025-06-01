@@ -10,11 +10,13 @@ const FoodListItem = ({ food }: { food: any }) => {
     return (
         <>
             <div className='flex w-full overflow-hidden' onClick={() => setIsOpen(true)}>
-                <div className='border rounded-lg w-36 flex-none h-full flex justify-center items-center overflow-hidden'>
+                <div className='flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32
+                                rounded-lg overflow-hidden mr-4
+                                flex justify-center items-center'>
                     <Image url={imgUrl} />
                 </div>
 
-                <div className='flex-grow p-4 flex flex-col justify-between'>
+                <div className='flex-grow px-4 flex flex-col justify-between'>
                     <div>
                         <p className='text-xs text-gray-700 truncate'>{storeName}</p>
                         <p className='text-lg font-bold tracking-tighter'>{name}</p>

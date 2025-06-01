@@ -15,6 +15,11 @@ const Home = () => {
     const { foods } = useFoods();
     let navigate = useNavigate();
 
+    const viewPreset = (preset: any) => {
+        localStorage.setItem('selectedPreset', JSON.stringify(preset));
+        navigate('/food');
+    }
+
     return (
         <Layout back={false}>
             <Search placeholder={'Search for food...'}/>
@@ -24,7 +29,7 @@ const Home = () => {
                 </Badge>
                 {
                     presets.length ? presets.map((preset: any, index) => (
-                        <Badge key={index} onClick={() => navigate('/food')}>
+                        <Badge key={index} onClick={() => viewPreset(preset)}>
                             <p className='text-sm'>{ preset.id }</p>
                         </Badge>
                     )) : (

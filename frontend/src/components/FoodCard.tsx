@@ -10,12 +10,12 @@ const FoodCard = ({ food }: { food: any }) => {
     return (
         <div>
             <div className='flex flex-col w-full overflow-hidden h-52' onClick={() => setIsOpen(true)}>
-                <div className='h-32 w-full rounded-lg border flex justify-center items-center bg-gray-100 overflow-hidden'>
+                <div className='w-full h-32 rounded-lg border flex justify-center items-center bg-gray-100 overflow-hidden'>
                     <Image url={imgUrl} />
                 </div>
 
                 <div className='flex-grow flex flex-col justify-between mt-2'>
-                    <p className='text-lg font-bold tracking-tighter truncate'>{name}</p>
+                    <p className='text-lg font-semibold truncate'>{name}</p>
                     <p className='text-sm text-gray-700 truncate'>{storeName}</p>
                     <p className='text-xs text-gray-700'>£{price}</p>
                 </div>

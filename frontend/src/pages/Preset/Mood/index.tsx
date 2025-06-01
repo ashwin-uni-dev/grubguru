@@ -9,7 +9,7 @@ const Mood = () => {
     const { addOrUpdatePreference } = usePreferences();
     const moodOptions = [
         'Salty', 'Sweet', 'Spicy', 'Savory', 'Bitter', 'Sour', 'Umami',
-        'Comfort Food', 'Healthy', 'Light', 'Heavy', 'Refreshing', 'Creamy'
+        'Comfort ViewPreset', 'Healthy', 'Light', 'Heavy', 'Refreshing', 'Creamy'
     ];
 
     const [selectedMoods, setSelectedMoods] = useState<string[]>([]);

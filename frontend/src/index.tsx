@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from 'framer-motion';
 
 import Home from './pages/Home';
-import Food from './pages/Food';
+import Food from './pages/ViewPreset';
 import Preset from "./pages/Preset";
 import Mood from './pages/Preset/Mood';
 import PreferenceRoutesWrapper from './pages/Preset/preferenceWrapper';
