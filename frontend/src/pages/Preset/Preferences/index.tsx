@@ -1,13 +1,17 @@
 import ProgressivePage from "../../../components/ProgressivePage";
 import Layout from "../../../components/Layout";
-import React from "react";
+import React, { useState } from "react"; // Import useState
 import PreferenceCard from "./components/PreferenceCard";
 import {useNavigate} from "react-router-dom";
 import {usePreferences} from "../contexts/preferenceContext";
 import { BackendRequest } from "../../../lib/api";
+import WaitScreen from "../../../components/WaitScreen";
 
 const Preferences = () => {
     const navigate = useNavigate();
+    // New state to control the visibility of the saving screen
+    const [isSaving, setIsSaving] = useState(false);
+
     const preferenceOptions = [
         { name: 'Mood', icon: 'hamburger' },
         { name: 'Budget', icon: 'hand-coins' },
@@ -17,16 +21,24 @@ const Preferences = () => {
 
     const { preferences, presetName } = usePreferences();
 
-    const handleDone = () => {
-        BackendRequest
-            .to('users/1/presets')
-            .post({
-                id: presetName,
-                preferences
-            })
-            .execute()
+    const handleDone = async () => {
+        setIsSaving(true);
+        try {
+            await BackendRequest
+                .to('users/1/presets')
+                .post({
+                    id: presetName,
+                    preferences
+                })
+                .execute();
 
-        navigate('/');
+            navigate('/');
+
+        } catch (error) {
+            console.error("Error saving preset:", error);
+        } finally {
+            setIsSaving(false);
+        }
     }
 
     return (
@@ -35,7 +47,7 @@ const Preferences = () => {
                 <p className="font-medium mt-4">Choose your preferences</p>
                 <div className='grid grid-cols-2 gap-4 mt-2'>
                     {
-                        preferenceOptions.map((preference: any, index) => (
+                        preferenceOptions.map((preference, index) => ( // Removed 'any' type for cleaner JSX, assuming type is handled elsewhere
                             <PreferenceCard preference={preference.name}
                                             icon={preference.icon}
                                             onClick={() => navigate(`../${preference.name.toLowerCase()}`)}
@@ -47,11 +59,12 @@ const Preferences = () => {
                     Your chosen preferences will be shown below.
                 </p>
                 {
-                    preferences.map((preference: any, index) => (
-                        <p>{JSON.stringify(preference)}</p>
+                    preferences.map((preference, index) => ( // Removed 'any' type, added key
+                        <p key={index}>{JSON.stringify(preference)}</p>
                     ))
                 }
             </ProgressivePage>
+            <WaitScreen isVisible={isSaving} message='Saving your preset...' />
         </Layout>
     )
 }
