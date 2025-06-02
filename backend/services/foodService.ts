@@ -1,4 +1,4 @@
-import {Model, PipelineStage} from 'mongoose';
+import {Model} from 'mongoose';
 import {FoodItem, IFoodItem} from "../schemas/foodItem";
 
 export class FoodService {
@@ -61,8 +61,6 @@ export class FoodService {
                     $unwind: '$storeInfo'
                 }
             ]
-
-            console.log(pipeline);
 
             return await this.foodItemModel.aggregate([...pipeline, ...postProcessing]);
         } catch (error) {

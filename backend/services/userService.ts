@@ -29,6 +29,7 @@ export class UserService {
             }
 
             const existingIndex = user.presets.findIndex((p: any) => p.id === preset.id);
+            console.log(preset, existingIndex);
 
             if (existingIndex >= 0) {
                 user.presets[existingIndex] = preset;
