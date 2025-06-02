@@ -17,9 +17,9 @@ const Preferences = () => {
 
     const { preferences, presetName } = usePreferences();
 
-    const handleDone = async () => {
-        await BackendRequest
-            .to('/users/1/presets')
+    const handleDone = () => {
+        BackendRequest
+            .to('users/1/presets')
             .post({
                 id: presetName,
                 preferences
