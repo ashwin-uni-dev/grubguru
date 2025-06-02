@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {ReactNode} from "react";
 
 interface Props {
-    title: string,
+    title: ReactNode,
     children: ReactNode
 }
 
@@ -12,11 +12,11 @@ const BackablePage = ({ title, children }: Props) => {
 
     return (
         <div>
-            <div className='fixed bg-white flex items-center p-2 border-b-2 gap-2 w-full'>
+            <div className='bg-white flex items-center p-4 border-b-2 gap-2 w-full'>
                 <ArrowLeft onClick={() => navigate(-1)} size={18}/>
-                <p className='font-semibold'>{ title }</p>
+                { title }
             </div>
-            <div className='py-4'>
+            <div className=''>
                 { children }
             </div>
         </div>

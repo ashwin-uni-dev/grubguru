@@ -9,7 +9,7 @@ const ViewPreset = () => {
     const { presetName, foods } = useFoods();
 
     return (
-        <BackablePage title={presetName}>
+        <BackablePage title={<p className='font-semibold'>{presetName}</p>}>
             <Layout back={true}>
                 <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                     {

@@ -12,6 +12,7 @@ import Mood from './pages/Preset/Mood';
 import PreferenceRoutesWrapper from './pages/Preset/preferenceWrapper';
 import Budget from './pages/Preset/Budget';
 import Preferences from "./pages/Preset/Preferences";
+import SearchResults from "./pages/SearchResults";
 
 const AnimatedRoutes = () => {
     const location = useLocation();
@@ -21,6 +22,7 @@ const AnimatedRoutes = () => {
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<Home />} />
                 <Route path="/food" element={<Food />}/>
+                <Route path="/search-results" element={<SearchResults />} />
                 <Route path="/preset" element={<PreferenceRoutesWrapper />}>
                     <Route index element={<Preset />} />
                     <Route path="preferences" element={<Preferences />} />

@@ -20,10 +20,15 @@ const Home = () => {
         navigate('/food');
     }
 
+    const handleSubmit = (query: string) => {
+        localStorage.setItem('searchQuery', query);
+        navigate(`/search-results`);
+    }
+
     return (
         <Layout back={false}>
-            <Search placeholder={'Search for food...'}/>
-            <HorizontalSection title='Your Presets'>
+            <Search placeholder={'Search for food...'} submit={handleSubmit}/>
+            <HorizontalSection title='Your presets'>
                 <Badge onClick={() => navigate('/preset')}>
                     <p className='font-bold text-xl'>+</p>
                 </Badge>
@@ -37,14 +42,14 @@ const Home = () => {
                     )
                 }
             </HorizontalSection>
-            <HorizontalSection title='Suggested For You'>
+            <HorizontalSection title='Suggested for you'>
                 {
                     foods.length ? foods.map((food: any, index) => (
                         <FoodCard food={food} />
                     )) : <FoodCardSkeleton />
                 }
             </HorizontalSection>
-            <HorizontalSection title='Your Favourites'>
+            <HorizontalSection title='Your favourites'>
                 {
                     foods.length ? foods.map((food: any, index) => (
                         <FoodCard food={food} />

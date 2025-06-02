@@ -10,7 +10,7 @@ const HorizontalSection = ({ title, children }: Props) => {
     return (
         <div>
             <div className='flex justify-between items-center mt-4'>
-                <h2 className='text-xl font-bold tracking-tighter mb-2'>{ title }</h2>
+                <h2 className='text-xl font-semibold mb-2'>{ title }</h2>
                 <div className='bg-gray-200 rounded-full p-1'>
                     <ArrowRight size={14} color='gray'/>
                 </div>
