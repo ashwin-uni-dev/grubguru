@@ -10,36 +10,62 @@ export class FoodService {
         private foodItemModel: Model<IFoodItem>
     ) {}
 
-    private budgetComponent(stage: any , budget: number) {
-        stage.price = {
-            $lt: budget
-        }
-
-        return stage;
+    private budgetComponent(budget: number) {
+        return {
+            price: {
+                $lt: budget
+            }
+        };
     }
 
-    private nutritionComponent(stage: any, nutrition: any) {
-        stage.kcal = {
-            $gt: nutrition.minCalories,
-            $lt: nutrition.maxCalories
+    private nutritionComponent(nutrition: any) {
+        if (nutrition && nutrition.minCalories !== undefined && nutrition.maxCalories !== undefined) {
+            return {
+                kcal: {
+                    $gt: nutrition.minCalories,
+                    $lt: nutrition.maxCalories
+                }
+            };
         }
+        return {};
+    }
 
-        return stage;
+    private searchComponent(searchQuery: string) {
+        return {
+            index: 'default',
+            text: {
+                query: searchQuery,
+                path: {
+                    'wildcard': '*'
+                }
+            }
+        };
     }
 
     private buildPipeline(query: any) {
-        let match: any = {}
-        let search: any = {}
+        let pipeline: any[] = [];
+        let matchStage: any = {};
+
+        if (query.search) {
+            const searchConfig = this.searchComponent(query.search);
+            pipeline.push({ $search: searchConfig });
+        }
 
         if (query.budget) {
-            match = this.budgetComponent(match, query.budget);
+            const budgetMatch = this.budgetComponent(query.budget);
+            Object.assign(matchStage, budgetMatch);
         }
 
         if (query.nutrition) {
-            match = this.nutritionComponent(match, query.nutrition);
+            const nutritionMatch = this.nutritionComponent(query.nutrition);
+            Object.assign(matchStage, nutritionMatch);
         }
 
-        return [{ '$match': match }];
+        if (Object.keys(matchStage).length > 0) {
+            pipeline.push({ $match: matchStage });
+        }
+
+        return pipeline;
     }
 
     async getFoods(queryParams: any): Promise<IFoodItem[]> {

@@ -15,7 +15,7 @@ const FoodCard = ({ food }: { food: any }) => {
                 </div>
 
                 <div className='flex-grow flex flex-col justify-between mt-2'>
-                    <p className='text-lg font-semibold truncate'>{name}</p>
+                    <p className='text-md font-semibold truncate'>{name}</p>
                     <p className='text-sm text-gray-700 truncate'>{storeName}</p>
                     <p className='text-xs text-gray-700'>£{price}</p>
                 </div>
