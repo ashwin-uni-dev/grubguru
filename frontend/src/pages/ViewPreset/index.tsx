@@ -3,25 +3,30 @@ import { useFoods } from './hooks/useFoods';
 import FoodListItem from '../../components/FoodListItem';
 import Layout from "../../components/Layout";
 import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
+import BackablePage from "../../components/BackablePage";
 
 const ViewPreset = () => {
     const { presetName, foods } = useFoods();
 
     return (
-        <Layout back={true}>
-            <div>
-                <h1 className='text-2xl font-bold tracking-tighter'>{ presetName }</h1>
-                <div className='grid lg:grid-cols-2 sm:grid-cols-1 gap-4 mt-4'>
+        <BackablePage title={presetName}>
+            <Layout back={true}>
+                <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                     {
                         foods.length ? foods.map((food: any, index) => (
-                            <FoodListItem food={food} key={index} />
+                            <div key={index}>
+                                <FoodListItem food={food} />
+                                <hr className='my-4'/>
+                            </div>
                         )) : (
-                            <><FoodListItemSkeleton/><FoodListItemSkeleton/><FoodListItemSkeleton/></>
+                            <div className='flex flex-col gap-4'>
+                                <FoodListItemSkeleton/><FoodListItemSkeleton/><FoodListItemSkeleton/>
+                            </div>
                         )
                     }
                 </div>
-            </div>
-        </Layout>
+            </Layout>
+        </BackablePage>
     )
 }
 
