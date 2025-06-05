@@ -46,14 +46,14 @@ const Home = () => {
                 {
                     foods.length ? foods.map((food: any, index) => (
                         <FoodCard food={food} />
-                    )) : <FoodCardSkeleton />
+                    )) : <div className='w-4/5'><FoodCardSkeleton /></div>
                 }
             </HorizontalSection>
             <HorizontalSection title='Your favourites'>
                 {
                     foods.length ? foods.map((food: any, index) => (
                         <FoodCard food={food} />
-                    )) : <FoodCardSkeleton />
+                    )) : <div className='w-4/5'><FoodCardSkeleton /></div>
                 }
             </HorizontalSection>
         </Layout>
