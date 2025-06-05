@@ -3,7 +3,7 @@ import Layout from "../../../components/Layout";
 import React, { useState } from "react"; // Import useState
 import PreferenceCard from "./components/PreferenceCard";
 import {useNavigate} from "react-router-dom";
-import {usePreferences} from "../contexts/preferenceContext";
+import {PRESET_NAME_KEY, STORAGE_KEY, usePreferences} from "../contexts/preferenceContext";
 import { BackendRequest } from "../../../lib/api";
 import WaitScreen from "../../../components/WaitScreen";
 
@@ -32,6 +32,8 @@ const Preferences = () => {
                 })
                 .execute();
 
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(PRESET_NAME_KEY);
             navigate('/');
 
         } catch (error) {

@@ -12,8 +12,8 @@ interface PreferencesContextType {
     addOrUpdatePreference: (newOrUpdatedPreference: UserPreference) => void;
 }
 
-const STORAGE_KEY = 'userPreferences';
-const PRESET_NAME_KEY = 'presetName';
+export const STORAGE_KEY = 'userPreferences';
+export const PRESET_NAME_KEY = 'presetName';
 
 export const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
 
