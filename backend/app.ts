@@ -14,6 +14,8 @@ connectToDb();
 const isProd = process.env.NODE_ENV === 'production';
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(cors({
     origin: ['http://localhost:3000', 'https://grubguru.vercel.app'],
