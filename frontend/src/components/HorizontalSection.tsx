@@ -15,7 +15,7 @@ const HorizontalSection = ({ title, children }: Props) => {
                     <ArrowRight size={14} color='gray'/>
                 </div>
             </div>
-            <div className='flex gap-2 w-full overflow-x-auto'>
+            <div className='flex gap-2 overflow-x-auto w-screen'>
                 { children }
             </div>
         </div>
