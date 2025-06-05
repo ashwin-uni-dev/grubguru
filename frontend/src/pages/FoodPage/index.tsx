@@ -2,14 +2,24 @@ import React, { useState } from 'react';
 import { Store, MapPin, Heart } from 'lucide-react';
 import BackablePage from "../../components/BackablePage";
 import Layout from "../../components/Layout";
+import {BackendRequest} from "../../lib/api";
+import { useLiked } from './hooks/useLiked';
 
 const FoodInfo = () => {
     const food = JSON.parse(localStorage.getItem('selectedFood') || '{}');
-    const { imgUrl, name, price, desc, uberUrl } = food;
+    const { imgUrl, name, price, desc, uberUrl, _id: foodId } = food;
     const { name: storeName, longitude, latitude, address } = food.storeInfo || {};
 
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-    const [liked, setLiked] = useState(false);
+    const {liked, setLiked} = useLiked(foodId);
+
+    const likeFood = () => {
+        BackendRequest.to('users/1/likes')
+            .post({ foodId })
+            .execute();
+
+        setLiked(!liked);
+    }
 
     return (
         <BackablePage title={<p className="font-semibold">{name}</p>}>
@@ -30,7 +40,7 @@ const FoodInfo = () => {
                                 <p className="text-sm text-gray-500 mt-1">£{price}</p>
                             )}
                         </div>
-                        <button onClick={() => setLiked(!liked)}>
+                        <button onClick={() => likeFood()}>
                             <Heart
                                 size={22}
                                 className="transition-colors"

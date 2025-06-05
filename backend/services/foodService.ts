@@ -6,6 +6,23 @@ export class FoodService {
         return new FoodService(FoodItem);
     }
 
+    private storeInfoPipeline: any[] = [
+        {
+            $sample: { size: 20 } // Randomly select 20 documents
+        },
+        {
+            $lookup: {
+                from: 'stores',
+                localField: 'storeUrl',
+                foreignField: 'storeUrl',
+                as: 'storeInfo'
+            }
+        },
+        {
+            $unwind: '$storeInfo'
+        }
+    ];
+
     constructor(
         private foodItemModel: Model<IFoodItem>
     ) {}
@@ -71,24 +88,17 @@ export class FoodService {
     async getFoods(queryParams: any): Promise<IFoodItem[]> {
         try {
             const pipeline = this.buildPipeline(queryParams);
-            const postProcessing = [
-                {
-                    $sample: { size: 20 } // Randomly select 20 documents
-                },
-                {
-                    $lookup: {
-                        from: 'stores',
-                        localField: 'storeUrl',
-                        foreignField: 'storeUrl',
-                        as: 'storeInfo'
-                    }
-                },
-                {
-                    $unwind: '$storeInfo'
-                }
-            ]
 
-            return await this.foodItemModel.aggregate([...pipeline, ...postProcessing]);
+            return await this.foodItemModel.aggregate([...pipeline, ...this.storeInfoPipeline]);
+        } catch (error) {
+            console.error('Error fetching foods:', error);
+            throw new Error('Failed to retrieve food items.');
+        }
+    }
+
+    async runPipelineWithStoreInfo(pipeline: any): Promise<any> {
+        try {
+            return await this.foodItemModel.aggregate([...pipeline, ...this.storeInfoPipeline]);
         } catch (error) {
             console.error('Error fetching foods:', error);
             throw new Error('Failed to retrieve food items.');
