@@ -10,6 +10,6 @@ router.post('/login', passport.authenticate('local'), (req: Request, res: Respon
     res.send({ redirect: '/' })
 });
 
-router.post('/', (req: Request, res: Response) => controller.createUser(req, res))
+router.post('/register', (req: Request, res: Response) => controller.createUser(req, res))
 
 export default router;
