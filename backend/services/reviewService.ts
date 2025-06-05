@@ -12,6 +12,7 @@ export class ReviewService {
 
     async createReview(author: string, review: string, foodId: string) {
         try {
+            console.log(author, review, foodId);
             const newReview = new this.reviewModel({
                 author,
                 review,
@@ -24,15 +25,19 @@ export class ReviewService {
         }
     }
 
-    async getReviews(foodId: string) {
+    async getReviews(foodId: string, onlyTop: boolean) {
         if (!Types.ObjectId.isValid(foodId)) {
             throw new Error('Invalid foodId');
         }
 
-        return await this.reviewModel
-            .find({ foodId: new Types.ObjectId(foodId) })
-            .sort({ createdAt: -1 })
-            .exec();
-    }
+        const query = this.reviewModel
+            .find({foodId: new Types.ObjectId(foodId)})
+            .sort({createdAt: -1});
 
+        if (onlyTop) {
+            query.limit(1);
+        }
+
+        return await query.exec();
+    }
 }

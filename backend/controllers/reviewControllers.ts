@@ -13,12 +13,13 @@ export class ReviewController {
         const author = req.user!.username;
 
         await this.reviewService.createReview(author, review, foodId);
-        res.status(200).send();
+        res.status(200).send({});
     }
 
     async getReviews(req: Request, res: Response) {
         const foodId= req.params.id;
-        const reviews = await this.reviewService.getReviews(foodId);
+        const onlyTop = req.query.onlyTop ? true : false;
+        const reviews = await this.reviewService.getReviews(foodId, onlyTop);
         res.send(reviews);
     }
 }
