@@ -11,6 +11,7 @@ import passport from './auth/passport';
 
 connectToDb();
 
+const isProd = process.env.NODE_ENV === 'production';
 const app = express();
 
 app.use(express.json());
@@ -20,14 +21,14 @@ app.use(cors({
 }));
 app.use(
     session({
-        secret: 'supersecret',
+        secret: process.env.SESSION_SECRET || 'supersecret',
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: Boolean(process.env.SECURE_COOKIE || 'false') ,
+            secure: isProd,
             httpOnly: true,
-            sameSite: 'none',
-        }
+            sameSite: isProd ? 'none' : 'lax',
+        },
     })
 );
 app.use(passport.initialize());
