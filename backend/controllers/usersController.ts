@@ -14,6 +14,11 @@ export class UsersController {
         res.send({ presets });
     }
 
+    async createUser(req: Request, res: Response) {
+        await this.userService.createUser(req.body.username, req.body.password);
+        res.send({ redirect: '/login' })
+    }
+
     async addPreset(req: Request, res: Response){
         const id = req.userId!;
         await this.userService.addPreset(id, req.body);

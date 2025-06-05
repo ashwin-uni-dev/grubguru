@@ -1,6 +1,9 @@
 import mongoose, { Model } from 'mongoose';
 import {User, IUser} from "../schemas/user";
 import {FoodService} from "./foodService";
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
 
 export class UserService {
     static create() {
@@ -11,6 +14,39 @@ export class UserService {
         private userModel: Model<IUser>,
         private foodService: FoodService
     ) {}
+
+    async createUser(username: string, password: string) {
+        try {
+            const existingUser = await this.userModel.findOne({ username });
+
+            if (existingUser) {
+                throw new Error('User with this username already exists.');
+            }
+
+            const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+            const newUser = new this.userModel({
+                username,
+                password: hashedPassword,
+                id: Math.floor(Math.random() * Math.pow(10, 10))
+            });
+
+            await newUser.save();
+        } catch (error: any) {
+            console.error('Error creating user:', error.message || error);
+            throw new Error(`Failed to create user: ${error.message || 'Unknown error'}`);
+        }
+    }
+
+    async authenticateUser(username: string, password: string) {
+        const existingUser = await this.userModel.findOne({ username });
+        if (!existingUser) { return null }
+
+        const validPassword = await bcrypt.compare(password, existingUser.password)
+        if (validPassword) return existingUser;
+
+        return null;
+    }
 
     async getPresets(id: number): Promise<any> {
         try {
