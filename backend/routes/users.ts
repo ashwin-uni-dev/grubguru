@@ -7,5 +7,6 @@ const controller = UsersController.create();
 
 router.get('/:id/presets', (req: Request, res: Response) => controller.getPresets(req, res));
 router.post('/:id/presets', (req: Request, res: Response) => controller.addPreset(req, res));
+router.post('/:id/likes', (req: Request, res: Response) => controller.toggleFoodLike(req, res));
 
 export default router;

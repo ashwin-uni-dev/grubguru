@@ -19,4 +19,10 @@ export class UsersController {
         await this.userService.addPreset(id, req.body);
         res.send({ success: true })
     }
+
+    async toggleFoodLike(req: Request, res: Response) {
+        const id = parseInt(req.params.id);
+        const foodId = req.body.foodId;
+        await this.userService.toggleFoodLike(id, foodId);
+    }
 }

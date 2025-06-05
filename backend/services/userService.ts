@@ -44,4 +44,27 @@ export class UserService {
         }
     }
 
+    async toggleFoodLike(id: number, foodId: string): Promise<any> {
+        try {
+            const user = await this.userModel.findOne({ id });
+
+            if (!user) {
+                throw new Error(`User with id ${id} not found.`);
+            }
+
+            const foodLikeIndex = user.likes.findIndex((like: any) => like == foodId);
+
+            if (foodLikeIndex >= 0) {
+                user.likes.splice(foodLikeIndex, 1);
+            } else {
+                user.presets.push(foodId);
+            }
+
+            await user.save();
+            return user.presets;
+        } catch (error) {
+            console.error('Error adding/updating food like:', error);
+            throw new Error('Failed to add or update preset.');
+        }
+    }
 }
