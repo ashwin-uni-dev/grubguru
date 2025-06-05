@@ -26,7 +26,7 @@ app.use(
         cookie: {
             secure: Boolean(process.env.SECURE_COOKIE || 'false') ,
             httpOnly: true,
-            sameSite: 'lax',
+            sameSite: 'none',
         }
     })
 );
