@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/userService";
+import {BoardService} from "../services/boardService";
 
 export class UsersController {
     static create() {
-        return new UsersController(UserService.create());
+        return new UsersController(UserService.create(), BoardService.create());
     }
 
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService,
+                private boardService: BoardService,) {}
 
     async getPresets(req: Request, res: Response) {
         const id = req.userId!;
@@ -42,5 +44,34 @@ export class UsersController {
         const foodId = req.params.foodId;
         const doesLike = await this.userService.doesLike(id, foodId);
         res.send(doesLike);
+    }
+
+    async addBoard(req: Request, res: Response) {
+        const id = req.userId!;
+        const { boardName } = req.body;
+
+        const board = await this.boardService.createBoard(id, boardName);
+        res.send(board);
+    }
+
+    async addFoodToBoard(req: Request, res: Response) {
+        const id = req.userId!;
+        const { foodId } = req.body;
+        const { boardName } = req.params;
+        await this.boardService.addToBoard(id, boardName, foodId);
+        res.send({})
+    }
+
+    async getBoards(req: Request, res: Response) {
+        const id = req.userId!;
+        const boards = await this.boardService.getBoards(id);
+        res.send(boards);
+    }
+
+    async getBoard(req: Request, res: Response) {
+        const id = req.userId!;
+        const { boardName } = req.params;
+        const board = await this.boardService.getBoard(id, boardName);
+        res.send(board);
     }
 }

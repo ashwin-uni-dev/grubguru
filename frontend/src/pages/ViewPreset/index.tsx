@@ -11,7 +11,7 @@ const ViewPreset = () => {
     return (
         <BackablePage title={<p className='font-semibold'>{presetName}</p>}>
             <Layout back={true}>
-                <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4'>
+                <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4 overflow-y-scroll max-h-screen pb-5'>
                     {
                         foods.length ? foods.map((food: any, index) => (
                             <div key={index}>

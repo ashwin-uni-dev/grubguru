@@ -15,4 +15,9 @@ router.get('/likes/:foodId', (req: Request, res: Response) => controller.doesLik
 router.get('/likes', (req: Request, res: Response) => controller.getLikedFoods(req, res));
 router.post('/likes', (req: Request, res: Response) => controller.toggleFoodLike(req, res));
 
+router.get('/boards', (req: Request, res: Response) => controller.getBoards(req, res));
+router.get('/boards/:boardName', (req: Request, res: Response) => controller.getBoard(req, res));
+router.post('/boards', (req: Request, res: Response) => controller.addBoard(req, res));
+router.post('/boards/:boardName', (req: Request, res: Response) => controller.addFoodToBoard(req, res));
+
 export default router;

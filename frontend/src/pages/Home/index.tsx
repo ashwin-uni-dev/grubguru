@@ -1,21 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {usePresets} from "./hooks/usePresets";
 import {useFoods} from "./hooks/useFoods";
-import FoodCard from "../../components/FoodCard";
 import {useNavigate} from "react-router-dom";
 import Layout from "../../components/Layout";
 import HorizontalSection from "../../components/HorizontalSection";
 import Badge from '../../components/Badge';
 import Search from "../../components/Search";
-import FoodCardSkeleton from "../../components/skeletons/FoodCardSkeleton";
 import BadgeSkeleton from "../../components/skeletons/BadgeSkeleton";
 import {useNotifs} from "./hooks/useNotifs";
+import ViewButton from "./components/ViewButton";
+import Suggested from "./components/Suggested";
+import Boards from "./components/Boards";
 
 const Home = () => {
     useNotifs();
 
     const { presets } = usePresets();
-    const { foods, likes } = useFoods();
+    const [currentView, setCurrentView] = useState(0);
     let navigate = useNavigate();
 
     const viewPreset = (preset: any) => {
@@ -45,25 +46,18 @@ const Home = () => {
                     )
                 }
             </HorizontalSection>
-            <HorizontalSection title='Suggested for you'>
+            <div className='flex flex-row gap-2 mt-4'>
+                <ViewButton view={currentView == 0} onClick={() => setCurrentView(0)}>Suggested For You</ViewButton>
+                <ViewButton view={currentView == 1} onClick={() => setCurrentView(1)}>Your Boards</ViewButton>
+            </div>
+            <div className='mt-4'>
                 {
-                    foods != null ? foods.map((food: any, index) => (
-                        <FoodCard food={food} />
-                    )) : <div className='w-4/5'><FoodCardSkeleton /></div>
-                }
-            </HorizontalSection>
-            <HorizontalSection title='Your favourites'>
-                {
-                    likes != null ? likes.map((food: any, index) => (
-                        <FoodCard food={food} />
-                    )) : <div className='w-4/5'><FoodCardSkeleton /></div>
+                    currentView == 0 && <Suggested />
                 }
                 {
-                    likes != null && likes.length === 0 ? (
-                        <p className='text-gray-500 text-sm'>You have not favourited any foods.</p>
-                    ) : <p></p>
+                    currentView == 1 && <Boards />
                 }
-            </HorizontalSection>
+            </div>
         </Layout>
     )
 }
