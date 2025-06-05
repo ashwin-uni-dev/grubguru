@@ -1,14 +1,16 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface IUser extends Document {
-    name: string;
+    username: string;
+    password: string;
     id: number;
     presets: any[];
     likes: string[];
 }
 
 const userSchema = new Schema({
-    name: String,
+    username: String,
+    password: String,
     id: Number,
     presets: [{}],
     likes: [String],
