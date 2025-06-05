@@ -9,11 +9,11 @@ declare global {
 }
 
 export const userIdParser = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.isAuthenticated()) {
+    if (!req.isAuthenticated!()) {
         res.status(401).send({ redirect: '/login' });
         return;
     }
 
-    req.userId = req.user.id;
+    req.userId = req.user!.id;
     next();
 };

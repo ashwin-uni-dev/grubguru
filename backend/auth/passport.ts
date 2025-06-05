@@ -11,6 +11,8 @@ declare global {
 
         interface Request {
             user?: User;
+            // @ts-ignore
+            isAuthenticated?: () => boolean;
         }
     }
 }
