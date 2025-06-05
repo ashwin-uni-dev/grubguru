@@ -12,7 +12,7 @@ export const useFoods = () => {
             .execute();
 
         const likedFoods = await BackendRequest
-            .to('users/1/likes')
+            .to('users/likes')
             .get()
             .execute();
 

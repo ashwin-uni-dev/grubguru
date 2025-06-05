@@ -14,6 +14,9 @@ import Budget from './pages/Preset/Budget';
 import Preferences from "./pages/Preset/Preferences";
 import SearchResults from "./pages/SearchResults";
 import FoodPage from "./pages/FoodPage";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+
 
 const AnimatedRoutes = () => {
     const location = useLocation();
@@ -25,6 +28,8 @@ const AnimatedRoutes = () => {
                 <Route path="/food" element={<Food />}/>
                 <Route path="/search-results" element={<SearchResults />} />
                 <Route path="/food-info" element={<FoodPage />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/preset" element={<PreferenceRoutesWrapper />}>
                     <Route index element={<Preset />} />
                     <Route path="preferences" element={<Preferences />} />

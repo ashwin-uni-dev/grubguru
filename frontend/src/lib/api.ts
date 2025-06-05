@@ -47,11 +47,18 @@ export class BackendRequest {
 
         const response = await fetch(fullEndpoint, {
             method: this.method,
+            credentials: "include",
             headers,
             body,
         });
 
-        return await response.json();
+        const json = await response.json();
+
+        if (json.redirect) {
+            window.location.href = json.redirect;
+        }
+
+        return json;
     }
 }
 
