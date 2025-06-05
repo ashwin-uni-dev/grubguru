@@ -69,4 +69,8 @@ export class ServerEvent {
     onMessage(func: any) {
         this.eventSource.onmessage = func;
     }
+
+    close() {
+        this.eventSource.close();
+    }
 }

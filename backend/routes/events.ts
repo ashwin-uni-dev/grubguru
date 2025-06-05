@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/notifications/:userId', sseMiddleware, (req: Request, res: Response) => {
     console.log('user subscribed to notifs')
-    res.sseSend!({ time: new Date().toISOString() });
+    setInterval(() => res.sseSend!({ time: new Date().toISOString() }), 1000);
 })
 
 export default router;
