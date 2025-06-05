@@ -13,7 +13,7 @@ const SearchResults = () => {
 
     const handleSubmit = (query: string) => {
         localStorage.setItem('searchQuery', query);
-        setFoods([]);
+        setFoods(null);
         setSearchQuery(query);
     }
 
@@ -22,7 +22,7 @@ const SearchResults = () => {
             <Layout back={true}>
                 <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                     {
-                        foods.length ?
+                        foods != null ?
                             <>
                                 <p>{foods.length} results for {searchQuery}</p>
                                 {

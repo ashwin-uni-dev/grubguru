@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {BackendRequest} from "../../../lib/api";
 
 export const useFoods = () => {
-    const [foods, setFoods] = useState([]);
+    const [foods, setFoods] = useState<any[] | null>(null);
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem('searchQuery') || '');
 
     const fetchFoods = async () => {

@@ -2,8 +2,8 @@ import {useEffect, useState} from "react";
 import {BackendRequest} from "../../../lib/api";
 
 export const useFoods = () => {
-    const [foods, setFoods] = useState([]);
-    const [likes, setLikes] = useState([]);
+    const [foods, setFoods] = useState<any[] | null>(null);
+    const [likes, setLikes] = useState<any[] | null>(null);
 
     const fetchFoods = async () => {
         const foods = await BackendRequest
