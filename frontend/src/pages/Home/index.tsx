@@ -36,7 +36,7 @@ const Home = () => {
                     <p className='font-bold text-xl'>+</p>
                 </Badge>
                 {
-                    presets.length ? presets.map((preset: any, index) => (
+                    presets != null ? presets.map((preset: any, index) => (
                         <Badge key={index} onClick={() => viewPreset(preset)}>
                             <p className='text-sm'>{ preset.id }</p>
                         </Badge>
@@ -57,6 +57,11 @@ const Home = () => {
                     likes != null ? likes.map((food: any, index) => (
                         <FoodCard food={food} />
                     )) : <div className='w-4/5'><FoodCardSkeleton /></div>
+                }
+                {
+                    likes != null && likes.length === 0 ? (
+                        <p className='text-gray-500 text-sm'>You have not favourited any foods.</p>
+                    ) : <p></p>
                 }
             </HorizontalSection>
         </Layout>

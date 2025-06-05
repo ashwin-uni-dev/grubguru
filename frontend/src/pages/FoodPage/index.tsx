@@ -14,7 +14,7 @@ const FoodInfo = () => {
     const {liked, setLiked} = useLiked(foodId);
 
     const likeFood = () => {
-        BackendRequest.to('users/1/likes')
+        BackendRequest.to('users/likes')
             .post({ foodId })
             .execute();
 

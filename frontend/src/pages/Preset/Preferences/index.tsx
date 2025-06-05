@@ -25,7 +25,7 @@ const Preferences = () => {
         setIsSaving(true);
         try {
             await BackendRequest
-                .to('users/1/presets')
+                .to('users/presets')
                 .post({
                     id: presetName,
                     preferences

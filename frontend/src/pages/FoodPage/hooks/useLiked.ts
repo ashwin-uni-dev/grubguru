@@ -6,7 +6,7 @@ export const useLiked = (foodId: string) => {
 
     const getLikedStatus = async () => {
         const isLiked = await BackendRequest
-            .to(`users/1/likes/${foodId}`)
+            .to(`users/likes/${foodId}`)
             .get()
             .execute();
 
