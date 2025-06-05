@@ -16,6 +16,7 @@ import SearchResults from "./pages/SearchResults";
 import FoodPage from "./pages/FoodPage";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import ReviewPage from "./pages/ReviewPage";
 
 
 const AnimatedRoutes = () => {
@@ -30,6 +31,7 @@ const AnimatedRoutes = () => {
                 <Route path="/food-info" element={<FoodPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/reviews" element={<ReviewPage />} />
                 <Route path="/preset" element={<PreferenceRoutesWrapper />}>
                     <Route index element={<Preset />} />
                     <Route path="preferences" element={<Preferences />} />
