@@ -5,6 +5,7 @@ import FoodsRouter from './routes/foods';
 import UsersRouter from './routes/users';
 import EventsRouter from './routes/events';
 import AuthRouter from './routes/auth';
+import ReviewsRouter from './routes/reviews';
 import { connectToDb } from './dbConfig';
 import {errorHandler} from "./middleware/error";
 import passport from './auth/passport';
@@ -40,6 +41,7 @@ app.use('/foods', FoodsRouter);
 app.use('/users', UsersRouter);
 app.use('/events', EventsRouter);
 app.use('/auth', AuthRouter);
+app.use('/reviews', ReviewsRouter);
 
 app.get('/', (req, res) => {
     res.send({ message: 'server is worsadjasdjking' })

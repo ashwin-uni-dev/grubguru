@@ -4,6 +4,7 @@ import BackablePage from "../../components/BackablePage";
 import Layout from "../../components/Layout";
 import {BackendRequest} from "../../lib/api";
 import { useLiked } from './hooks/useLiked';
+import ReviewPanel from "./components/reviewPanel";
 
 const FoodInfo = () => {
     const food = JSON.parse(localStorage.getItem('selectedFood') || '{}');
@@ -55,6 +56,8 @@ const FoodInfo = () => {
                             {desc}
                         </p>
                     )}
+
+                    <ReviewPanel />
 
                     <div className="text-sm text-gray-600 space-y-2">
                         <div className="flex items-center gap-2">

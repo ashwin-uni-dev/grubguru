@@ -12,7 +12,7 @@ const BackablePage = ({ title, children }: Props) => {
 
     return (
         <div>
-            <div className='bg-white flex items-center p-4 border-b-2 gap-2 w-full'>
+            <div className='bg-white flex items-center p-4 border-b gap-2 w-full'>
                 <ArrowLeft onClick={() => navigate(-1)} size={18}/>
                 { title }
             </div>
