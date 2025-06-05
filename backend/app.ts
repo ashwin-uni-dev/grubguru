@@ -24,7 +24,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: false,
+            secure: Boolean(process.env.SECURE_COOKIE || 'false') ,
             httpOnly: true,
             sameSite: 'lax',
         }
