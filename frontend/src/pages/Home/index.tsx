@@ -9,8 +9,11 @@ import Badge from '../../components/Badge';
 import Search from "../../components/Search";
 import FoodCardSkeleton from "../../components/skeletons/FoodCardSkeleton";
 import BadgeSkeleton from "../../components/skeletons/BadgeSkeleton";
+import {useNotifs} from "./hooks/useNotifs";
 
 const Home = () => {
+    useNotifs();
+
     const { presets } = usePresets();
     const { foods, likes } = useFoods();
     let navigate = useNavigate();

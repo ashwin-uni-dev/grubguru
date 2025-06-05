@@ -54,3 +54,19 @@ export class BackendRequest {
         return await response.json();
     }
 }
+
+export class ServerEvent {
+    private eventSource: EventSource = new EventSource('');
+
+    constructor(route: string) {
+        this.eventSource = new EventSource(`${BACKEND_BASE}/${route}`);
+    }
+
+    static subscribe(route: string) {
+        return new ServerEvent(route);
+    }
+
+    onMessage(func: any) {
+        this.eventSource.onmessage = func;
+    }
+}
