@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import FoodsRouter from './routes/foods';
 import UsersRouter from './routes/users';
+import EventsRouter from './routes/events';
 import { connectToDb } from './dbConfig';
 connectToDb();
 
@@ -11,10 +12,12 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/foods', FoodsRouter);
-app.use('/users', UsersRouter)
+app.use('/users', UsersRouter);
+app.use('/events', EventsRouter);
 
 app.get('/', (req, res) => {
     res.send({ message: 'server is worsadjasdjking' })
 })
 
+app.listen(3001, () => {})
 export default app;
