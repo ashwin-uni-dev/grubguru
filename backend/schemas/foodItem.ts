@@ -10,7 +10,6 @@ export interface IFoodItem extends Document {
     storeUrl: string,
 }
 
-
 const foodItemSchema = new Schema({
     name: String,
     price: Number,
@@ -20,5 +19,15 @@ const foodItemSchema = new Schema({
     uberUrl: String,
     storeUrl: String,
 })
+
+foodItemSchema.virtual('storeInfo', {
+    ref: 'Store',
+    localField: 'storeUrl',
+    foreignField: 'storeUrl',
+    justOne: true
+});
+
+foodItemSchema.set('toObject', { virtuals: true });
+foodItemSchema.set('toJSON', { virtuals: true });
 
 export const FoodItem = model<IFoodItem>('FoodItem', foodItemSchema);

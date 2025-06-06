@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {usePresets} from "./hooks/usePresets";
-import {useFoods} from "./hooks/useFoods";
 import {useNavigate} from "react-router-dom";
 import Layout from "../../components/Layout";
 import HorizontalSection from "../../components/HorizontalSection";
@@ -21,7 +20,7 @@ const Home = () => {
 
     const viewPreset = (preset: any) => {
         localStorage.setItem('selectedPreset', JSON.stringify(preset));
-        navigate('/food');
+        navigate('/food-view?source=preset');
     }
 
     const handleSubmit = (query: string) => {

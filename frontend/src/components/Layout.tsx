@@ -13,7 +13,7 @@ const Layout = ({ back, children }: { back: boolean, children: ReactNode }) => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.1 }}
         >
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col max-h-screen">
                 <div className='flex-1 pb-24 lg:w-3/4 lg:mx-auto sm:w-full p-6 gap-4 overflow-y-auto'>
                     {children}
                 </div>

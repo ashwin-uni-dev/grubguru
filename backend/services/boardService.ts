@@ -1,5 +1,8 @@
 import mongoose, { Model, Types } from 'mongoose';
 import {Board, IBoard} from "../schemas/board";
+import {Store} from '../schemas/store';
+
+new Store();
 
 export class BoardService {
     static create() {
@@ -23,8 +26,14 @@ export class BoardService {
 
     async getBoard(userId: number, boardName: string): Promise<IBoard | null> {
         try {
+            console.log('Registered models:', mongoose.modelNames());
             const board = await this.boardModel.findOne({ userId, boardName })
-                .populate('foods')
+                .populate({
+                    path: 'foods',
+                    populate: {
+                        path: 'storeInfo',
+                    }
+                })
                 .lean();
 
             return board;

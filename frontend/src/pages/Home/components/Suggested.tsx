@@ -6,7 +6,7 @@ const Suggested = () => {
     const { foods } = useFoods();
 
     return (
-        <div className='grid grid-cols-2 gap-4 overflow-y-scroll max-h-screen'>
+        <div className='grid grid-cols-2 gap-4'>
             {
                 foods != null ? foods.map((food: any, index) => (
                     <FoodCard food={food} />
