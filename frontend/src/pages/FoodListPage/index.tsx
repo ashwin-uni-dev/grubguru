@@ -1,15 +1,15 @@
-import React from 'react';
-import { useFoods } from './hooks/useFoods';
-import FoodListItem from '../../components/FoodListItem';
-import Layout from "../../components/Layout";
-import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
 import BackablePage from "../../components/BackablePage";
+import Layout from "../../components/Layout";
+import FoodListItem from "../../components/FoodListItem";
+import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
+import React from "react";
+import { useFoods } from './hooks/useFoods';
 
-const ViewPreset = () => {
-    const { presetName, foods } = useFoods();
+const FoodListPage = () => {
+    const { foods, name } = useFoods();
 
     return (
-        <BackablePage title={<p className='font-semibold'>{presetName}</p>}>
+        <BackablePage title={<p className='font-semibold'>{ name }</p>}>
             <Layout back={true}>
                 <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4 overflow-y-scroll max-h-screen pb-5'>
                     {
@@ -30,4 +30,4 @@ const ViewPreset = () => {
     )
 }
 
-export default ViewPreset;
+export default FoodListPage;

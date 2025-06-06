@@ -13,7 +13,7 @@ const userSchema = new Schema({
     password: String,
     id: Number,
     presets: [{}],
-    likes: [String],
+    likes: [String]
 })
 
 export const User = model<IUser>('User', userSchema);
