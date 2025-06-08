@@ -27,3 +27,9 @@ export class StoreProcessor extends URLProcessor {
         return link.includes('/store/');
     }
 }
+
+export class NeighborhoodProcessor extends URLProcessor {
+    filter(link: string): boolean {
+        return link.includes('/neighborhood/');
+    }
+}

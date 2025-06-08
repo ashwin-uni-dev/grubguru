@@ -9,23 +9,40 @@ interface RawFoodData {
     uberUrl: string
 }
 
+async function getFoodTags(name:string , description: string) {
+    return []
+}
+
 const isObjectEmpty = (o: any) => Object.keys(o).length == 0;
 
-const processFoodItem = (rawFoodInfo: RawFoodData) => {
+const processFoodItem = async (rawFoodInfo: RawFoodData) => {
     const { name, price, desc, imgUrl, uberUrl } = rawFoodInfo;
     const priceAsNumber = Number(price?.trim().replace('£', ''));
+    const processedDesc = (desc && desc.length >= 15) ? desc.trim() : '';
+    const processedName = name?.trim() || '';
+    let kcalValue: number | undefined;
+
+    if (rawFoodInfo.kcal) {
+        const match = rawFoodInfo.kcal.match(/\d+/);
+        if (match) {
+            kcalValue = Number(match[0]);
+        }
+    }
 
     if (!priceAsNumber) {
         return {};
     }
 
+    const tags: string[] = await getFoodTags(processedName, processedDesc);
+
     return {
-        name: name?.trim() || '',
+        name: processedName,
         price: priceAsNumber,
-        desc: (desc && desc.length >= 15) ? desc.trim() : '',
+        desc: processedDesc,
         imgUrl,
-        kcal: rawFoodInfo.kcal ? Number(rawFoodInfo.kcal.trim().replace('kcal', '')) : undefined,
+        kcal: kcalValue,
         uberUrl,
+        tags
     };
 };
 
@@ -70,11 +87,15 @@ export class FoodItemProcessor extends StorePageProcessor {
             return anchorContainers.map(getFoodInfo);
         });
 
-        return rawFoodItemData.flatMap((item: RawFoodData) => {
-            const foodInfo = processFoodItem(item);
-            if (isObjectEmpty(foodInfo)) return [];
+        let foodItems = []
 
-            return { ...foodInfo, storeUrl: this.storeUrl };
-        });
+        for (let item of rawFoodItemData) {
+            const foodInfo = await processFoodItem(item);
+            if (isObjectEmpty(foodInfo)) continue;
+
+            foodItems.push({ ...foodInfo, storeUrl: this.storeUrl });
+        };
+
+        return foodItems;
     }
 }

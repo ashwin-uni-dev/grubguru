@@ -8,6 +8,7 @@ export interface IFoodItem extends Document {
     imgUrl: string;
     uberUrl: string;
     storeUrl: string,
+    tags: string[];
 }
 
 const foodItemSchema = new Schema({
@@ -18,6 +19,7 @@ const foodItemSchema = new Schema({
     imgUrl: String,
     uberUrl: String,
     storeUrl: String,
+    tags: [String]
 })
 
 foodItemSchema.virtual('storeInfo', {

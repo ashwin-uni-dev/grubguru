@@ -14,6 +14,7 @@
   "dependencies": {
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
+    "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -29,6 +30,7 @@
     "vercel": "^42.2.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/bcrypt": "^5.0.2",
     "@types/express-session": "^1.18.1",
     "@types/node": "^22.15.21",

@@ -42,7 +42,8 @@ export class Scraper {
         this.browser = await puppeteer.launch({
             headless: true,
             args,
-            executablePath: '/usr/bin/chromium-browser'
+            executablePath: '/usr/bin/chromium-browser',
+            timeout: 60000
         });
     }
 
@@ -55,9 +56,13 @@ export class Scraper {
         await page.setUserAgent(userAgent);
         await page.setViewport({ width: 1280, height: 800 });
 
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
-        await autoScroll(page);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            await page.goto(url, {waitUntil: 'networkidle2', timeout: 40000});
+            await autoScroll(page);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        } catch (e: any) {
+            console.log(e.message);
+        }
         
         return page;
     }
