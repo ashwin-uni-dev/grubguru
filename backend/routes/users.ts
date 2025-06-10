@@ -8,6 +8,12 @@ const controller = UsersController.create();
 
 router.use(userIdParser);
 
+router.get('/', (req: Request, res: Response) => controller.findUsersBySearch(req, res));
+
+router.get('/friends', (req: Request, res: Response) => controller.getFriends(req, res));
+router.post('/friends', (req: Request, res: Response) => controller.addFriend(req, res));
+router.delete('/friends', (req: Request, res: Response) => controller.removeFriend(req, res));
+
 router.get('/presets', (req: Request, res: Response) => controller.getPresets(req, res));
 router.post('/presets', (req: Request, res: Response) => controller.addPreset(req, res));
 
@@ -19,5 +25,7 @@ router.get('/boards', (req: Request, res: Response) => controller.getBoards(req,
 router.get('/boards/:boardName', (req: Request, res: Response) => controller.getBoard(req, res));
 router.post('/boards', (req: Request, res: Response) => controller.addBoard(req, res));
 router.post('/boards/:boardName', (req: Request, res: Response) => controller.addFoodToBoard(req, res));
+
+router.get('/notifications', (req: Request, res: Response) => controller.getNotifications(req, res));
 
 export default router;

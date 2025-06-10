@@ -1,4 +1,4 @@
-import {User} from "../schemas/user";
+import {Notification} from "../schemas/notification";
 import {Request, Response} from 'express';
 
 export class NotificationEventHandler {
@@ -6,16 +6,10 @@ export class NotificationEventHandler {
         return new NotificationEventHandler();
     }
 
-    watchUser(req: Request, res: Response) {
-        const pipeline = [
-            {
-                $match: {
-                    id: req.userId!
-                }
-            }
-        ];
-
-        User.watch(pipeline).
-            on('change', (data: any) => res.sseSend!(data));
+    watchUserNotifs(req: Request, res: Response) {
+        Notification.watch().
+            on('change', (data: any) => {
+                if (data.fullDocument.for == req.user!.username) res.sseSend!(data);
+        });
     }
 }

@@ -1,14 +1,39 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import {BoardService} from "../services/boardService";
+import {NotificationService} from "../services/notificationService";
 
 export class UsersController {
     static create() {
-        return new UsersController(UserService.create(), BoardService.create());
+        return new UsersController(UserService.create(),
+            BoardService.create(),
+            NotificationService.create());
     }
 
     constructor(private userService: UserService,
-                private boardService: BoardService,) {}
+                private boardService: BoardService,
+                private notificationService: NotificationService) {}
+
+
+    async findUsersBySearch(req: Request, res: Response) {
+        const search = req.query.search as string;
+
+        if (!search) {
+            res.status(400).send({ error: 'Search parameter is required' });
+            return;
+        }
+
+        const users = await this.userService.findUsersBySearch(search);
+        res.send(users);
+    }
+
+    async addFriend(req: Request, res: Response) {
+        const id = req.userId!;
+        const friendUsername = req.body.username;
+
+        await this.userService.addFriend(id, friendUsername);
+        res.send({ success: true });
+    }
 
     async getPresets(req: Request, res: Response) {
         const id = req.userId!;
@@ -73,5 +98,23 @@ export class UsersController {
         const { boardName } = req.params;
         const board = await this.boardService.getBoard(id, boardName);
         res.send(board);
+    }
+
+    async getFriends(req: Request, res: Response) {
+        const id = req.userId!;
+        const friends = await this.userService.getFriends(id);
+        res.send(friends);
+    }
+
+    async removeFriend(req: Request, res: Response) {
+        const id = req.userId!;
+        const username = req.body.username;
+        await this.userService.removeFriend(id, username);
+        res.send({ success: true });
+    }
+
+    async getNotifications(req: Request, res: Response) {
+        const notifications = await this.notificationService.getNotifications(req.user!.username);
+        res.send(notifications);
     }
 }

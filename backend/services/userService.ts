@@ -2,18 +2,28 @@ import mongoose, { Model } from 'mongoose';
 import {User, IUser} from "../schemas/user";
 import {FoodService} from "./foodService";
 import bcrypt from 'bcrypt';
+import {NotificationData, NotificationService} from "./notificationService";
 
 const SALT_ROUNDS = 10;
 
 export class UserService {
     static create() {
-        return new UserService(User, FoodService.create());
+        return new UserService(User, FoodService.create(), NotificationService.create());
     }
 
     constructor(
         private userModel: Model<IUser>,
-        private foodService: FoodService
+        private foodService: FoodService,
+        private notificationService: NotificationService,
     ) {}
+
+    private async getUserById(id: number): Promise<IUser> {
+        const user = await this.userModel.findOne({ id });
+        if (!user) {
+            throw new Error(`User with id ${id} not found.`);
+        }
+        return user;
+    }
 
     async createUser(username: string, password: string) {
         try {
@@ -126,6 +136,7 @@ export class UserService {
     async toggleFoodLike(id: number, foodId: string): Promise<any> {
         try {
             const user = await this.userModel.findOne({ id });
+            const food = await this.foodService.getFoodById(foodId);
 
             if (!user) {
                 throw new Error(`User with id ${id} not found.`);
@@ -137,13 +148,87 @@ export class UserService {
                 user.likes.splice(foodLikeIndex, 1);
             } else {
                 user.likes.push(foodId);
+                await this.notifyFollowers(id, {
+                    source: user.username,
+                    text: `liked the food ${food!.name}`,
+                    type: 'like',
+                    metadata: food
+                });
             }
 
             await user.save();
             return user.presets;
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error adding/updating food like:', error);
             throw new Error('Failed to add or update preset.');
+        }
+    }
+
+    async findUsersBySearch(search: string) {
+        try {
+            return await this.userModel.find({
+                username: { $regex: search, $options: 'i' }
+            });
+        }catch (error: any) {
+            console.log('Error finding user by search:', error.message || error);
+            throw new Error('Failed to find users by search.');
+        }
+    }
+
+    async addFriend(id: number, followedUsername: string) {
+        try {
+            const user = await this.getUserById(id);
+            const followedUser = await this.userModel.findOne({ username: followedUsername });
+
+            user.following.push(followedUsername);
+            followedUser!.followers.push(user.username);
+
+            this.notificationService.notifyUser(followedUsername, {
+                source: user.username,
+                text: `followed you`,
+                type: 'follow'
+            })
+
+            await user.save();
+            await followedUser!.save();
+        } catch (error: any) {
+            console.log('Error adding friend:', error.message || error);
+        }
+    }
+
+    async getFriends(id: number) {
+        try {
+            const user = await this.getUserById(id);
+
+            return await this.userModel.find({
+                username: { $in: user.following }
+            }).exec();
+        } catch (error: any) {
+            console.log('Error finding friends', error.message || error);
+        }
+    }
+
+    async removeFriend(id: number, username: string) {
+        try {
+            const user = await this.getUserById(id);
+            const unfollowedUser = await this.userModel.findOne({ username });
+
+            user.following = user.following.filter((friend: string) => friend !== username);
+            unfollowedUser!.followers = unfollowedUser!.followers.filter((friend: string) => friend !== user.username);
+
+            await unfollowedUser!.save();
+            await user.save();
+        } catch (error: any) {
+            console.log('Error removing friend:', error.message || error);
+        }
+    }
+
+    async notifyFollowers(id: number, notificationData: NotificationData) {
+        try {
+            const user = await this.getUserById(id);
+            this.notificationService.notifyUsers(user.followers, notificationData);
+        } catch (error: any) {
+            console.log('Error notifying followers:', error.message || error);
         }
     }
 }

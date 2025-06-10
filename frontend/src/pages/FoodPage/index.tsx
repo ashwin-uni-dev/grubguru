@@ -28,12 +28,6 @@ const FoodInfo = () => {
         setShowModal(true);
     };
 
-    const confirmBookmark = () => {
-        alert(selectedBoard);
-        setBookmarked(true);
-        setShowModal(false);
-    };
-
     return (
         <BackablePage title={<p className="font-semibold">{name}</p>}>
             <Layout back={true}>
@@ -76,9 +70,21 @@ const FoodInfo = () => {
                         <div className="flex items-center gap-2"><MapPin size={16} /><span>{address}</span></div>
                     </div>
 
-                    <div className="flex flex-col text-sm text-purple-600 underline space-y-1">
-                        {uberUrl && <a href={uberUrl} target="_blank">View on Uber Eats</a>}
-                        <a href={googleMapsUrl} target="_blank">Directions on Google Maps</a>
+                    <div className="flex flex-col gap-2">
+                        {uberUrl &&
+                            <a href={uberUrl} target="_blank">
+                                <div className='flex items-center justify-center p-2 w-full bg-black text-white font-semibold rounded-lg'>
+                                    View on Uber Eats
+                                </div>
+                            </a>
+                        }
+                        {googleMapsUrl &&
+                            <a href={googleMapsUrl} target="_blank">
+                                <div className='flex items-center justify-center p-2 w-full bg-red-500 text-white font-semibold rounded-lg'>
+                                    Directions on Google Maps
+                                </div>
+                            </a>
+                        }
                     </div>
                 </div>
             </Layout>

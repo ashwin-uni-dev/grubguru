@@ -6,6 +6,8 @@ export interface IUser extends Document {
     id: number;
     presets: any[];
     likes: string[];
+    following: string[];
+    followers: string[];
 }
 
 const userSchema = new Schema({
@@ -13,7 +15,9 @@ const userSchema = new Schema({
     password: String,
     id: Number,
     presets: [{}],
-    likes: [String]
+    likes: [String],
+    following: [String],
+    followers: [String]
 })
 
 export const User = model<IUser>('User', userSchema);
