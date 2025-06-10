@@ -14,6 +14,8 @@ export const userIdParser = (req: Request, res: Response, next: NextFunction) =>
         return;
     }
 
+    console.log(req.user!.id);
+
     req.userId = req.user!.id;
     next();
 };

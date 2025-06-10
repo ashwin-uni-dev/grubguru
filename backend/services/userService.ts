@@ -15,6 +15,14 @@ export class UserService {
         private foodService: FoodService
     ) {}
 
+    private async getUserById(id: number): Promise<IUser> {
+        const user = await this.userModel.findOne({ id });
+        if (!user) {
+            throw new Error(`User with id ${id} not found.`);
+        }
+        return user;
+    }
+
     async createUser(username: string, password: string) {
         try {
             const existingUser = await this.userModel.findOne({ username });
@@ -141,9 +149,62 @@ export class UserService {
 
             await user.save();
             return user.presets;
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error adding/updating food like:', error);
             throw new Error('Failed to add or update preset.');
+        }
+    }
+
+    async findUsersBySearch(search: string) {
+        try {
+            return await this.userModel.find({
+                username: { $regex: search, $options: 'i' }
+            });
+        }catch (error: any) {
+            console.log('Error finding user by search:', error.message || error);
+            throw new Error('Failed to find users by search.');
+        }
+    }
+
+    async addFriend(id: number, followedUsername: string) {
+        try {
+            const user = await this.getUserById(id);
+            const followedUser = await this.userModel.findOne({ username: followedUsername });
+
+            user.following.push(followedUsername);
+            followedUser!.followers.push(user.username);
+
+            await user.save();
+            await followedUser!.save();
+        } catch (error: any) {
+            console.log('Error adding friend:', error.message || error);
+        }
+    }
+
+    async getFriends(id: number) {
+        try {
+            const user = await this.getUserById(id);
+
+            return await this.userModel.find({
+                username: { $in: user.following }
+            }).exec();
+        } catch (error: any) {
+            console.log('Error finding friends', error.message || error);
+        }
+    }
+
+    async removeFriend(id: number, username: string) {
+        try {
+            const user = await this.getUserById(id);
+            const unfollowedUser = await this.userModel.findOne({ username });
+
+            user.following = user.following.filter((friend: string) => friend !== username);
+            unfollowedUser!.followers = unfollowedUser!.followers.filter((friend: string) => friend !== user.username);
+
+            await unfollowedUser!.save();
+            await user.save();
+        } catch (error: any) {
+            console.log('Error removing friend:', error.message || error);
         }
     }
 }

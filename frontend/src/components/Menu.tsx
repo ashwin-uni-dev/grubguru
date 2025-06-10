@@ -1,8 +1,11 @@
 import React from 'react';
-import { Home, History, Settings } from 'lucide-react';
+import { Home, Users, Settings } from 'lucide-react';
 import {useNavigate} from "react-router-dom";
+import {useNotifs} from '../hooks/useNotifs'
 
 const Menu = () => {
+    useNotifs();
+
     const navigate = useNavigate();
 
     return (
@@ -12,8 +15,8 @@ const Menu = () => {
                     <Home strokeWidth={2} color='white'/>
                 </button>
 
-                <button className="flex flex-col items-center text-sm">
-                    <History strokeWidth={2} color='white' />
+                <button className="flex flex-col items-center text-sm" onClick={() => navigate('/social')}>
+                    <Users strokeWidth={2} color='white' />
                 </button>
 
                 <button className="flex flex-col items-center text-sm">

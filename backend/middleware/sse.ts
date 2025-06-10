@@ -12,10 +12,9 @@ export const sseMiddleware = (req: Request, res: Response, next: NextFunction) =
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.flushHeaders();
 
-    res.write(`data: Connected to server\n\n`);
+    res.write(`data: Connected to server user id ${req.userId!}\n\n`);
 
     res.sseSend = (data: any) => {
         res.write(`data: ${JSON.stringify(data)}\n\n`);

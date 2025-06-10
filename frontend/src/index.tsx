@@ -18,6 +18,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ReviewPage from "./pages/ReviewPage";
 import FoodListPage from "./pages/FoodListPage";
+import Social from "./pages/Social";
+import FriendSearch from "./pages/FriendSearch";
 
 
 const AnimatedRoutes = () => {
@@ -29,6 +31,8 @@ const AnimatedRoutes = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/food" element={<Food />}/>
                 <Route path="/food-view" element={<FoodListPage />}/>
+                <Route path="/social" element={<Social />} />
+                <Route path="/social-search" element={<FriendSearch />} />
                 <Route path="/search-results" element={<SearchResults />} />
                 <Route path="/food-info" element={<FoodPage />} />
                 <Route path="/register" element={<Register />} />

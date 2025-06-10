@@ -6,14 +6,11 @@ import HorizontalSection from "../../components/HorizontalSection";
 import Badge from '../../components/Badge';
 import Search from "../../components/Search";
 import BadgeSkeleton from "../../components/skeletons/BadgeSkeleton";
-import {useNotifs} from "./hooks/useNotifs";
 import ViewButton from "./components/ViewButton";
 import Suggested from "./components/Suggested";
 import Boards from "./components/Boards";
 
 const Home = () => {
-    useNotifs();
-
     const { presets } = usePresets();
     const [currentView, setCurrentView] = useState(0);
     let navigate = useNavigate();

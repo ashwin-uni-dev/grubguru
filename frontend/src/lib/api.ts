@@ -25,6 +25,12 @@ export class BackendRequest {
         return this;
     }
 
+    delete(body: any) {
+        this.method = 'DELETE';
+        this.body = body;
+        return this;
+    }
+
     addParam(param : string, value : string) {
         this.params.push(`${param}=${value}`);
         return this;
@@ -66,7 +72,7 @@ export class ServerEvent {
     private eventSource: EventSource = new EventSource('');
 
     constructor(route: string) {
-        this.eventSource = new EventSource(`${BACKEND_BASE}/${route}`);
+        this.eventSource = new EventSource(`${BACKEND_BASE}/${route}`, { withCredentials: true });
     }
 
     static subscribe(route: string) {
