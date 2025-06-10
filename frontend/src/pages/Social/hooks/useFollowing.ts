@@ -2,7 +2,7 @@ import {BackendRequest} from "../../../lib/api";
 import {useEffect, useState} from "react";
 
 export const useFollowing = () => {
-    const [following, setFollowing] = useState<string[] | null>(null);
+    const [following, setFollowing] = useState<any[] | null>(null);
 
     const getFollowing = async () => {
         const friendList = await BackendRequest

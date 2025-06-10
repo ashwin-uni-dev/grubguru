@@ -28,11 +28,11 @@ const FriendListItem = ({ user }: { user: any }) => {
             .execute();
 
         // @ts-ignore
-        setFriends(oldFriends => oldFriends.filter(friend => friend.username !== user.username));
+        setFollowing(oldFriends => oldFriends.filter(friend => friend.username !== user.username));
     }
 
     useEffect(() => {
-        if (following) setIsFollowing(following.includes(user.username));
+        if (following) setIsFollowing(following.map((u: any) => u.username).includes(user.username));
     }, [following])
 
     return (

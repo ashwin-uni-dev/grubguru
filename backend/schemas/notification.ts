@@ -2,6 +2,7 @@ import { Schema, model, Document, Types } from 'mongoose';
 
 export interface INotification extends Document {
     for: string;
+    source: string;
     type: string;
     title: string;
     text: string;
@@ -9,6 +10,7 @@ export interface INotification extends Document {
 }
 
 const notificationSchema = new Schema<INotification>({
+    source: { type: String, required: true },
     for: { type: String, required: true },
     type: { type: String, required: true },
     title: { type: String, required: true },

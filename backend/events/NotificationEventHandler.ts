@@ -9,8 +9,7 @@ export class NotificationEventHandler {
     watchUserNotifs(req: Request, res: Response) {
         Notification.watch().
             on('change', (data: any) => {
-                console.log(data);
-                res.sseSend!(data)
+                if (data.fullDocument.for == req.user!.username) res.sseSend!(data);
         });
     }
 }

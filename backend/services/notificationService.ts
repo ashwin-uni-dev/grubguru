@@ -1,7 +1,8 @@
 import {Model, Types} from 'mongoose';
 import {INotification, Notification} from "../schemas/notification";
 
-interface NotificationData {
+export interface NotificationData {
+    source: string,
     type: string,
     title: string,
     text: string
@@ -17,9 +18,10 @@ export class NotificationService {
     ) {}
 
     notifyUser(username: string, notificationData: NotificationData) {
-        const {type, title, text} = notificationData;
+        const { source, type, title, text} = notificationData;
 
         const notification = new this.notificationModel({
+            source,
             for: username,
             type,
             title,
@@ -27,5 +29,11 @@ export class NotificationService {
         })
 
         notification.save();
+    }
+
+    notifyUsers(usernames: string[], notificationData: NotificationData) {
+        for (const username of usernames) {
+            this.notifyUser(username, notificationData);
+        }
     }
 }

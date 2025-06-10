@@ -2,17 +2,19 @@ import mongoose, { Model } from 'mongoose';
 import {User, IUser} from "../schemas/user";
 import {FoodService} from "./foodService";
 import bcrypt from 'bcrypt';
+import {NotificationData, NotificationService} from "./notificationService";
 
 const SALT_ROUNDS = 10;
 
 export class UserService {
     static create() {
-        return new UserService(User, FoodService.create());
+        return new UserService(User, FoodService.create(), NotificationService.create());
     }
 
     constructor(
         private userModel: Model<IUser>,
-        private foodService: FoodService
+        private foodService: FoodService,
+        private notificationService: NotificationService,
     ) {}
 
     private async getUserById(id: number): Promise<IUser> {
@@ -145,6 +147,12 @@ export class UserService {
                 user.likes.splice(foodLikeIndex, 1);
             } else {
                 user.likes.push(foodId);
+                await this.notifyFollowers(id, {
+                    source: user.username,
+                    title: `Liked a food`,
+                    text: `${user.username} liked a food`,
+                    type: 'like'
+                });
             }
 
             await user.save();
@@ -205,6 +213,15 @@ export class UserService {
             await user.save();
         } catch (error: any) {
             console.log('Error removing friend:', error.message || error);
+        }
+    }
+
+    async notifyFollowers(id: number, notificationData: NotificationData) {
+        try {
+            const user = await this.getUserById(id);
+            this.notificationService.notifyUsers(user.followers, notificationData);
+        } catch (error: any) {
+            console.log('Error notifying followers:', error.message || error);
         }
     }
 }
