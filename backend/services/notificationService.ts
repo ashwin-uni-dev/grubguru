@@ -4,8 +4,8 @@ import {INotification, Notification} from "../schemas/notification";
 export interface NotificationData {
     source: string,
     type: string,
-    title: string,
-    text: string
+    text: string,
+    metadata?: any
 }
 
 export class NotificationService {
@@ -18,14 +18,10 @@ export class NotificationService {
     ) {}
 
     notifyUser(username: string, notificationData: NotificationData) {
-        const { source, type, title, text} = notificationData;
 
         const notification = new this.notificationModel({
-            source,
             for: username,
-            type,
-            title,
-            text
+            ...notificationData
         })
 
         notification.save();
@@ -35,5 +31,9 @@ export class NotificationService {
         for (const username of usernames) {
             this.notifyUser(username, notificationData);
         }
+    }
+
+    async getNotifications(username: string) {
+        return await this.notificationModel.find({for: username}).sort({createdAt: -1});
     }
 }

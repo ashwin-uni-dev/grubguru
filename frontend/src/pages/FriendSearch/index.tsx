@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
 import BackablePage from "../../components/BackablePage";
 import Search from "../../components/Search";
-import {useResults} from "./hooks/useResults.ts#";
+import {useResults} from "./hooks/useResults";
 import FriendListItem from "./components/FriendListItem";
 
 const FriendSearch = () => {

@@ -136,6 +136,7 @@ export class UserService {
     async toggleFoodLike(id: number, foodId: string): Promise<any> {
         try {
             const user = await this.userModel.findOne({ id });
+            const food = await this.foodService.getFoodById(foodId);
 
             if (!user) {
                 throw new Error(`User with id ${id} not found.`);
@@ -149,9 +150,9 @@ export class UserService {
                 user.likes.push(foodId);
                 await this.notifyFollowers(id, {
                     source: user.username,
-                    title: `Liked a food`,
-                    text: `${user.username} liked a food`,
-                    type: 'like'
+                    text: `liked the food ${food!.name}`,
+                    type: 'like',
+                    metadata: food
                 });
             }
 
@@ -181,6 +182,12 @@ export class UserService {
 
             user.following.push(followedUsername);
             followedUser!.followers.push(user.username);
+
+            this.notificationService.notifyUser(followedUsername, {
+                source: user.username,
+                text: `followed you`,
+                type: 'follow'
+            })
 
             await user.save();
             await followedUser!.save();

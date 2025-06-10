@@ -20,6 +20,7 @@ import ReviewPage from "./pages/ReviewPage";
 import FoodListPage from "./pages/FoodListPage";
 import Social from "./pages/Social";
 import FriendSearch from "./pages/FriendSearch";
+import NotificationPage from './pages/NotificationPage';
 
 
 const AnimatedRoutes = () => {
@@ -32,6 +33,7 @@ const AnimatedRoutes = () => {
                 <Route path="/food" element={<Food />}/>
                 <Route path="/food-view" element={<FoodListPage />}/>
                 <Route path="/social" element={<Social />} />
+                <Route path="/notifications" element={<NotificationPage />} />
                 <Route path="/social-search" element={<FriendSearch />} />
                 <Route path="/search-results" element={<SearchResults />} />
                 <Route path="/food-info" element={<FoodPage />} />

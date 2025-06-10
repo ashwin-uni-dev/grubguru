@@ -26,4 +26,6 @@ router.get('/boards/:boardName', (req: Request, res: Response) => controller.get
 router.post('/boards', (req: Request, res: Response) => controller.addBoard(req, res));
 router.post('/boards/:boardName', (req: Request, res: Response) => controller.addFoodToBoard(req, res));
 
+router.get('/notifications', (req: Request, res: Response) => controller.getNotifications(req, res));
+
 export default router;

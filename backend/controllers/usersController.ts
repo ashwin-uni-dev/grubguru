@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import {BoardService} from "../services/boardService";
+import {NotificationService} from "../services/notificationService";
 
 export class UsersController {
     static create() {
-        return new UsersController(UserService.create(), BoardService.create());
+        return new UsersController(UserService.create(),
+            BoardService.create(),
+            NotificationService.create());
     }
 
     constructor(private userService: UserService,
-                private boardService: BoardService,) {}
+                private boardService: BoardService,
+                private notificationService: NotificationService) {}
 
 
     async findUsersBySearch(req: Request, res: Response) {
@@ -107,5 +111,10 @@ export class UsersController {
         const username = req.body.username;
         await this.userService.removeFriend(id, username);
         res.send({ success: true });
+    }
+
+    async getNotifications(req: Request, res: Response) {
+        const notifications = await this.notificationService.getNotifications(req.user!.username);
+        res.send(notifications);
     }
 }

@@ -23,7 +23,7 @@ const Menu = () => {
                     <Home strokeWidth={2} color='white'/>
                 </button>
 
-                <button className="flex flex-col items-center text-sm" onClick={() => navigate('/search')}>
+                <button className="flex flex-col items-center text-sm" onClick={() => navigate('/notifications')}>
                     <BellIcon strokeWidth={2} color='white' />
                 </button>
 

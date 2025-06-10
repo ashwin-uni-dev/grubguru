@@ -1,4 +1,4 @@
-import {Model} from 'mongoose';
+import mongoose, {Model} from 'mongoose';
 import {FoodItem, IFoodItem} from "../schemas/foodItem";
 
 export class FoodService {
@@ -103,5 +103,28 @@ export class FoodService {
             console.error('Error fetching foods:', error);
             throw new Error('Failed to retrieve food items.');
         }
+    }
+
+    async getFoodById(id: string) {
+        const result = await this.foodItemModel.aggregate([
+            {
+                $match: {
+                    '_id': new mongoose.Types.ObjectId(id)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'stores',
+                    localField: 'storeUrl',
+                    foreignField: 'storeUrl',
+                    as: 'storeInfo'
+                }
+            },
+            {
+                $unwind: '$storeInfo'
+            }
+        ]);
+
+        return result[0];
     }
 }
