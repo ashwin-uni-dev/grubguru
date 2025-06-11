@@ -59,6 +59,14 @@ export class FoodService {
         };
     }
 
+    private tagComponent(tags: string[]) {
+        return {
+            tags: {
+                $all: tags
+            }
+        }
+    }
+
     private buildPipeline(query: any) {
         let pipeline: any[] = [];
         let matchStage: any = {};
@@ -78,6 +86,11 @@ export class FoodService {
             Object.assign(matchStage, nutritionMatch);
         }
 
+        if (query.tags) {
+            const tagMatch = this.tagComponent(query.tags);
+            Object.assign(matchStage, tagMatch);
+        }
+
         if (Object.keys(matchStage).length > 0) {
             pipeline.push({ $match: matchStage });
         }
@@ -87,6 +100,7 @@ export class FoodService {
 
     async getFoods(queryParams: any): Promise<IFoodItem[]> {
         try {
+            console.log(queryParams);
             const pipeline = this.buildPipeline(queryParams);
 
             return await this.foodItemModel.aggregate([...pipeline, ...this.storeInfoPipeline]);

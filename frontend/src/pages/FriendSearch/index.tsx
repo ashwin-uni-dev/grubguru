@@ -1,13 +1,15 @@
 import React from 'react';
 import Layout from "../../components/Layout";
-import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
 import BackablePage from "../../components/BackablePage";
 import Search from "../../components/Search";
 import {useResults} from "./hooks/useResults";
 import FriendListItem from "./components/FriendListItem";
+import FriendSkeleton from "./components/FriendSkeleton";
+import {useFollowing} from "../Social/hooks/useFollowing";
 
 const FriendSearch = () => {
     const { results, setResults, searchQuery, setSearchQuery } = useResults();
+    const { following, setFollowing } = useFollowing();
 
     const handleSubmit = (query: string) => {
         localStorage.setItem('friendSearch', query);
@@ -20,13 +22,16 @@ const FriendSearch = () => {
             <Layout back={true}>
                 <div className='grid lg:grid-cols-2 sm:grid-cols-1'>
                     {
-                        results != null ?
+                        results != null && following != null ?
                             <>
                                 <p>{results.length} results for {searchQuery}</p>
                                 {
                                     results.map((result: any, index) => (
                                         <>
-                                            <FriendListItem key={index} user={result} />
+                                            <FriendListItem key={index}
+                                                            user={result}
+                                                            following={following}
+                                                            setFollowing={setFollowing} />
                                             <hr />
                                         </>
                                     ))
@@ -34,7 +39,7 @@ const FriendSearch = () => {
                             </>
                             : (
                                 <div className='flex flex-col gap-4'>
-                                    <FoodListItemSkeleton/><FoodListItemSkeleton/><FoodListItemSkeleton/>
+                                    <FriendSkeleton/><FriendSkeleton/><FriendSkeleton/>
                                 </div>
                             )
                     }

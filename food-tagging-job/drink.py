@@ -4,7 +4,6 @@ negative_hypernyms = {
     # Categories of solid food
     'food', 'meal', 'dish', 'solid food', 'fruit', 'vegetable', 'meat', 'bread', 'pastry',
     'dessert', 'snack', 'cereal', 'main course', 'appetizer', 'side dish', 'confectionery',
-    'dairy product', # Dairy products are often food, though some drinks contain them (milk)
 }
         
 negative_keywords = {
@@ -39,7 +38,7 @@ positive_keywords = {
     'beer', 'wine', 'cocktail', 'spirit', 'whiskey', 'vodka', 'gin', 'rum',
     'champagne', 'cider', 'ale', 'lager', 'stout', 'seltzer', 'kombucha',
     'iced tea', 'iced coffee', 'frappe', 'shake', 'squash', 'cordial',
-    'hot chocolate', 'cider', 'eggnog', 'sake',
+    'hot chocolate', 'cider', 'eggnog', 'sake', 'frappucino'
 
     # Terms indicating liquid form
     'liquid', 'beverage', 'drink', 'quenching', 'hydrating', 'sip', 'pour', 'chilled', 'iced', 'hot'

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {usePresets} from "./hooks/usePresets";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import Layout from "../../components/Layout";
 import HorizontalSection from "../../components/HorizontalSection";
 import Badge from '../../components/Badge';
@@ -12,8 +12,19 @@ import Boards from "./components/Boards";
 
 const Home = () => {
     const { presets } = usePresets();
-    const [currentView, setCurrentView] = useState(0);
     let navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [currentView, setCurrentView] = useState(() => {
+        const viewFromUrl = searchParams.get('view');
+        const parsedView = parseInt(viewFromUrl || '0', 10);
+        return (parsedView === 0 || parsedView === 1) ? parsedView : 0;
+    });
+
+    useEffect(() => {
+        searchParams.set('view', currentView.toString());
+        setSearchParams(searchParams);
+    }, [currentView, searchParams, setSearchParams]);
 
     const viewPreset = (preset: any) => {
         localStorage.setItem('selectedPreset', JSON.stringify(preset));
@@ -24,7 +35,6 @@ const Home = () => {
         localStorage.setItem('searchQuery', query);
         navigate(`/search-results`);
     }
-
     return (
         <Layout back={false}>
             <Search placeholder={'Search for food...'} submit={handleSubmit}/>
@@ -46,7 +56,7 @@ const Home = () => {
                 <ViewButton view={currentView == 0} onClick={() => setCurrentView(0)}>Suggested For You</ViewButton>
                 <ViewButton view={currentView == 1} onClick={() => setCurrentView(1)}>Your Boards</ViewButton>
             </div>
-            <div className='mt-4'>
+            <div className='mt-1'>
                 {
                     currentView == 0 && <Suggested />
                 }
