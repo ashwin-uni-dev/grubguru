@@ -7,7 +7,7 @@ import FriendListItem from "../FriendSearch/components/FriendListItem";
 
 const Social = () => {
     const navigate = useNavigate();
-    const { following } = useFollowing();
+    const { following, setFollowing } = useFollowing();
     
     const handleSubmit = (friend: string) => {
         localStorage.setItem('friendSearch', friend)
@@ -21,7 +21,11 @@ const Social = () => {
                 <p className='text-xl font-semibold'>Your Following</p>
                     {
                         following != null && following.map((user: any) => (
-                            <FriendListItem key={user.username} user={user} />
+                            <FriendListItem
+                                key={user.username}
+                                user={user}
+                                following={following}
+                                setFollowing={setFollowing} />
                         ))
                     }
             </div>

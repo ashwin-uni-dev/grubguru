@@ -22,18 +22,18 @@ class Tagger:
         return False
     
     def check_phrases(self, phrases, description):
-        return any([phrase in description for phrase in phrases])
+        return any([phrase in description.lower() for phrase in phrases])
 
     def check_tag(self, tag_name: str, description: str) -> bool:
         negative_keywords = self.tags[tag_name].negative_keywords
         positive_keywords = self.tags[tag_name].positive_keywords
         default = self.tags[tag_name].default
 
-        if self.check_phrases(positive_keywords, description):
-            return True
-
         if self.check_phrases(negative_keywords, description):
             return False
+        
+        if self.check_phrases(positive_keywords, description):
+            return True
         
         tokens = self.nlp_processor.get_tokens(description)
 
@@ -46,7 +46,7 @@ class Tagger:
 
         return default
 
-    def tag_description(self: str, description: str) -> List[str]:
+    def get_tags(self: str, description: str) -> List[str]:
         tags = []
         for tag in self.tags.keys():
             if self.check_tag(tag, description):

@@ -6,6 +6,7 @@ import { Heart } from "lucide-react";
 import BoardNameModal from "./BoardNameModal";
 import { BackendRequest } from "../../../lib/api";
 import {useNavigate} from "react-router-dom";
+import ActionButton from "./ActionButton";
 
 const Boards = () => {
     const { boards, getBoards } = useBoards();
@@ -23,12 +24,13 @@ const Boards = () => {
 
     return (
         <div>
-            <button
-                className='bg-black text-white text-sm py-1 px-2 rounded-full mb-2'
-                onClick={() => setShowModal(true)}
-            >
-                + Create a board
-            </button>
+            <div className='mb-2'>
+                <ActionButton
+                    selected={true}
+                    onClick={() => setShowModal(true)}>
+                    Create a board
+                </ActionButton>
+            </div>
 
             {showModal && (
                 <BoardNameModal
@@ -39,17 +41,26 @@ const Boards = () => {
 
             <div className="">
                 <div className='grid grid-cols-2 gap-4'>
-                    <div className='flex flex-col gap-2' onClick={() => navigate('/food-view?source=likes')}>
-                        <div className={'w-full aspect-square rounded-lg flex justify-center items-center bg-red-500 text-white'}>
-                            <Heart size={32} fill={'white'} />
-                        </div>
-                        <p className='font-semibold'>Liked Foods</p>
-                    </div>
                     {boards != null
-                        ? boards.map((board: any, index) => (
-                            <BoardCard key={index} boardName={board.boardName} />
-                        ))
-                        : <FoodCardSkeleton />
+                        ? <>
+                            <div className='flex flex-col gap-2' onClick={() => navigate('/food-view?source=likes')}>
+                                <div className={'w-full aspect-square rounded-lg flex justify-center items-center bg-red-500 text-white'}>
+                                    <Heart size={32} fill={'white'} />
+                                </div>
+                                <p className='font-semibold'>Liked Foods</p>
+                            </div>
+                            {
+                                boards.map((board: any, index) => (
+                                    <BoardCard key={index} boardName={board.boardName} />
+                                ))
+                            }
+                            </>
+                        : <>
+                            <FoodCardSkeleton />
+                            <FoodCardSkeleton />
+                            <FoodCardSkeleton />
+                            <FoodCardSkeleton />
+                          </>
                     }
                 </div>
             </div>
