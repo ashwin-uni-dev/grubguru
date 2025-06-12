@@ -22,6 +22,10 @@ app.use(cors({
     origin: ['http://localhost:3000', 'https://grubguru.vercel.app'],
     credentials: true
 }));
+app.options('*', cors({
+    origin: ['http://localhost:3000', 'https://grubguru.vercel.app'],
+    credentials: true
+}));
 app.use(
     session({
         secret: process.env.SESSION_SECRET || 'supersecret',

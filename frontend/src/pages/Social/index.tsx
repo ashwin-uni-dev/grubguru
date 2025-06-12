@@ -18,7 +18,7 @@ const Social = () => {
         <Layout back={false}>
             <Search placeholder={'Search for people...'} submit={handleSubmit}/>
             <div className='flex flex-col py-4'>
-                <p className='text-xl font-semibold'>Your Following</p>
+                <p className='text-xl font-semibold'>Following</p>
                     {
                         following != null && following.map((user: any) => (
                             <FriendListItem
