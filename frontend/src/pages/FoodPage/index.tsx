@@ -7,9 +7,11 @@ import { useLiked } from './hooks/useLiked';
 import ReviewPanel from "./components/reviewPanel";
 import {useUserBoards} from "./hooks/useUserBoards";
 import BoardSelection from "./components/BoardSelection";
+import { useNavigate } from 'react-router-dom';
 
 const FoodInfo = () => {
     const food = JSON.parse(localStorage.getItem('selectedFood') || '{}');
+    const navigate = useNavigate();
     const { imgUrl, name, price, desc, uberUrl, _id: foodId } = food;
     const { name: storeName, longitude, latitude, address } = food.storeInfo || {};
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
@@ -27,6 +29,11 @@ const FoodInfo = () => {
     const handleBookmark = () => {
         setShowModal(true);
     };
+
+    const viewStore = () => {
+        localStorage.setItem('selectedStore', JSON.stringify(food.storeInfo));
+        navigate('/food-view?source=store');
+    }
 
     return (
         <BackablePage title={<p className="font-semibold">{name}</p>}>
@@ -66,8 +73,20 @@ const FoodInfo = () => {
                     <ReviewPanel />
 
                     <div className="text-sm text-gray-600 space-y-2">
-                        <div className="flex items-center gap-2"><Store size={16} /><span>{storeName}</span></div>
-                        <div className="flex items-center gap-2"><MapPin size={16} /><span>{address}</span></div>
+                        <div className="flex items-center gap-2">
+                            <div className='bg-purple-500 p-1 rounded-lg' onClick={viewStore}>
+                                <Store size={18} color='white' />
+                            </div>
+                            <span>{storeName}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <a href={googleMapsUrl} target="_blank">
+                                <div className='bg-red-500 p-1 rounded-lg'>
+                                    <MapPin size={18} color='white' />
+                                </div>
+                            </a>
+                            <span>{address}</span>
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -75,13 +94,6 @@ const FoodInfo = () => {
                             <a href={uberUrl} target="_blank">
                                 <div className='flex items-center justify-center p-2 w-full bg-black text-white font-semibold rounded-lg'>
                                     View on Uber Eats
-                                </div>
-                            </a>
-                        }
-                        {googleMapsUrl &&
-                            <a href={googleMapsUrl} target="_blank">
-                                <div className='flex items-center justify-center p-2 w-full bg-red-500 text-white font-semibold rounded-lg'>
-                                    Directions on Google Maps
                                 </div>
                             </a>
                         }

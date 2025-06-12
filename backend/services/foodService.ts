@@ -156,4 +156,25 @@ export class FoodService {
 
         return result[0];
     }
+
+    async getFoodByStore(url: string) {
+        return this.foodItemModel.aggregate([
+            {
+                $match: {
+                    'storeUrl': url
+                }
+            },
+            {
+                $lookup: {
+                    from: 'stores',
+                    localField: 'storeUrl',
+                    foreignField: 'storeUrl',
+                    as: 'storeInfo'
+                }
+            },
+            {
+                $unwind: '$storeInfo'
+            }
+        ]);
+    }
 }
