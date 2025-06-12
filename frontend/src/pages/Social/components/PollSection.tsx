@@ -27,7 +27,7 @@ const PollCodeModal: React.FC<PollCodeModalProps> = ({ isOpen, onClose, pollCode
 
     const handleCopy = () => {
         const textarea = document.createElement('textarea');
-        textarea.value = pollCode;
+        textarea.value = String(pollCode);
         textarea.style.position = 'fixed';
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);
