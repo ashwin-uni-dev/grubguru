@@ -3,7 +3,7 @@ import { usePoll } from "../hooks/usePoll";
 const PollMode = () => {
     const { pollData } = usePoll();
     return (
-        <div className='fixed bottom-[90vh] w-screen flex justify-center z-40'>
+        <div className='fixed top-[10vh] w-screen flex justify-center z-40'>
             <div className='bg-purple-500 rounded-full p-4 text-white text-xl shadow-lg'>
                 <p>You are currently in a poll.</p>
                 <div className='flex flex-row justify-around items-center text-sm'>

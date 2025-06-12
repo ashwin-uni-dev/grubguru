@@ -37,7 +37,7 @@ const Menu = () => {
                     <button className="flex flex-col items-center text-sm" onClick={() => {
                         localStorage.removeItem('pollCode');
                         navigate('/login')
-                    }>
+                    }}>
                         <LogOut strokeWidth={2} color='white' />
                     </button>
                 </nav>
