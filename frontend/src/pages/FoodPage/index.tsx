@@ -8,6 +8,8 @@ import ReviewPanel from "./components/reviewPanel";
 import {useUserBoards} from "./hooks/useUserBoards";
 import BoardSelection from "./components/BoardSelection";
 import { useNavigate } from 'react-router-dom';
+import {usePoll} from "../../hooks/usePoll";
+import {isPollMode} from "../../lib/poll";
 
 const FoodInfo = () => {
     const food = JSON.parse(localStorage.getItem('selectedFood') || '{}');
@@ -20,6 +22,7 @@ const FoodInfo = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedBoard, setSelectedBoard] = useState<string>('');
     const {userBoards} = useUserBoards();
+    const { addOption } = usePoll();
 
     const likeFood = () => {
         BackendRequest.to('users/likes').post({ foodId }).execute();
@@ -49,6 +52,7 @@ const FoodInfo = () => {
                             <p className="text-sm text-gray-500 mt-1">£{price}</p>
                         </div>
                         <div className="flex items-center gap-4">
+
                             <button onClick={handleBookmark}>
                                 <Pin
                                     size={22}
@@ -66,8 +70,9 @@ const FoodInfo = () => {
                                 />
                             </button>
                         </div>
+                        </div>
                     </div>
-
+                <div className="flex flex-col gap-4">
                     {desc && <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>}
 
                     <ReviewPanel />
@@ -88,7 +93,6 @@ const FoodInfo = () => {
                             <span>{address}</span>
                         </div>
                     </div>
-
                     <div className="flex flex-col gap-2">
                         {uberUrl &&
                             <a href={uberUrl} target="_blank">
@@ -96,6 +100,12 @@ const FoodInfo = () => {
                                     View on Uber Eats
                                 </div>
                             </a>
+                        }
+                        {
+                            isPollMode() &&
+                                <button className='bg-purple-500 text-white font-semibold rounded-lg p-2 whitespace-nowrap' onClick={() => addOption(food)}>
+                                    Add Store To Poll
+                                </button>
                         }
                     </div>
                 </div>
