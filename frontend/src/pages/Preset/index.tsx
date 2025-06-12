@@ -11,8 +11,16 @@ const Preset = () => {
     const { presetName, setPresetName } = usePreferences();
     const suggestions = ["Lunch Prep", "Weeknight Quick", "Low Carb"];
 
+    const proceed = () => {
+        if (presetName.trim() === '') {
+            alert('Preset Name can not be empty!')
+            return;
+        }
+        navigate('preferences')
+    }
+
     return (
-            <ProgressivePage title="New Preset" action={() => navigate('preferences')}>
+            <ProgressivePage title="New Preset" action={proceed}>
                 <div>
                     <span className="font-medium">Preset name</span>
                     <Input
