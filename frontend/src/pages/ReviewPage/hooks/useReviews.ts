@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {BackendRequest} from "../../../lib/api";
+import {BackendRequest, ServerEvent} from "../../../lib/api";
 
 export const useReviews = () => {
     const [reviews, setReviews] = useState<any[] | null>(null);
@@ -17,5 +17,15 @@ export const useReviews = () => {
         getReviews();
     }, []);
 
-    return { reviews, foodId };
+    useEffect(() => {
+        const serverEvent = ServerEvent.subscribe('events/reviews?foodId=' + foodId)
+
+        serverEvent.onMessage(getReviews)
+
+        return () => {
+            serverEvent.close();
+        }
+    }, [])
+
+    return { reviews, foodId, getReviews };
 }

@@ -68,7 +68,7 @@ const Preferences = () => {
                 <p className='text-gray-500 text-sm'>
                     Tap on any preference below to change or set it up.
                 </p>
-                <div className="flex flex-col gap-4 mt-4">
+                <div className="flex flex-col gap-2 mt-4">
                     {preferenceOptions.map((preference, index) => {
                         const selected = preferences.find((p: any) => p.id.toLowerCase() === preference.name.toLowerCase());
 

@@ -5,7 +5,7 @@ import { useReviews } from './hooks/useReviews';
 import {BackendRequest} from "../../lib/api";
 
 const Index = () => {
-    const { reviews, foodId } = useReviews();
+    const { reviews, foodId, getReviews } = useReviews();
     const [review, setNewReview] = useState('');
 
     const handleAddReview = async () => {
