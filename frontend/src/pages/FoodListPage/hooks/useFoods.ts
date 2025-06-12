@@ -15,6 +15,7 @@ export const useFoods = () => {
             const selectedPreset = JSON.parse(localStorage.getItem("selectedPreset") || "{}");
             const presetName = selectedPreset.id;
             const preferences = selectedPreset.preferences || [];
+            console.log(preferences);
 
             const body: Record<string, any> = {};
             for (let pref of preferences) {

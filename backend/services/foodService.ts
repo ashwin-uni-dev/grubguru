@@ -59,17 +59,27 @@ export class FoodService {
         };
     }
 
-    private tagComponent(tags: string[]) {
-        return {
-            tags: {
-                $all: tags
-            }
+    private tagComponent(moodTags: string[], nutritionTags: string[]) {
+        const tags: any = {};
+
+        if (nutritionTags.length > 0) {
+            tags['$all'] = nutritionTags.map(tag => tag.toLowerCase());
         }
+
+        if (moodTags.length > 0) {
+            tags['$in'] = moodTags.map(tag => tag.toLowerCase());
+        }
+
+        return {
+            tags
+        };
     }
 
     private buildPipeline(query: any) {
         let pipeline: any[] = [];
         let matchStage: any = {};
+        const moodTags = []
+        const nutritionTags = []
 
         if (query.search) {
             const searchConfig = this.searchComponent(query.search);
@@ -83,11 +93,16 @@ export class FoodService {
 
         if (query.nutrition) {
             const nutritionMatch = this.nutritionComponent(query.nutrition);
+            nutritionTags.push(...query.nutrition.tags);
             Object.assign(matchStage, nutritionMatch);
         }
 
-        if (query.tags) {
-            const tagMatch = this.tagComponent(query.tags);
+        if (query.mood) {
+            moodTags.push(...query.mood);
+        }
+
+        if (moodTags.length > 0 || nutritionTags.length > 0) {
+            const tagMatch = this.tagComponent(moodTags, nutritionTags);
             Object.assign(matchStage, tagMatch);
         }
 
