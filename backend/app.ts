@@ -6,6 +6,7 @@ import UsersRouter from './routes/users';
 import EventsRouter from './routes/events';
 import AuthRouter from './routes/auth';
 import ReviewsRouter from './routes/reviews';
+import PollsRouter from './routes/polls';
 import { connectToDb } from './dbConfig';
 import {errorHandler} from "./middleware/error";
 import passport from './auth/passport';
@@ -53,6 +54,7 @@ app.use('/users', UsersRouter);
 app.use('/events', EventsRouter);
 app.use('/auth', AuthRouter);
 app.use('/reviews', ReviewsRouter);
+app.use('/polls', PollsRouter);
 
 app.get('/', (req, res) => {
     res.send({ message: 'server is worsadjasdjking' })

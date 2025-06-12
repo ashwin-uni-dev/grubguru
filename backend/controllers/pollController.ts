@@ -13,11 +13,25 @@ export class PollController {
         res.send(pollId);
     }
 
-    async getPoll(req: Request, res: Response) {
+    async addOption(req: Request, res: Response) {
+        const pollId = Number(req.params.id);
+        const food = req.body.food;
+        await this.pollService.addOption(pollId, food);
+
         res.send({});
+    }
+
+    async getPoll(req: Request, res: Response) {
+        const poll = await this.pollService.getPoll(Number(req.params.id));
+        res.send(poll);
     }
 
     async vote(req: Request, res: Response) {
         res.send({})
+    }
+
+    deletePoll(req: Request, res: Response) {
+        this.pollService.deletePoll(req.body.id);
+        res.send({});
     }
 }

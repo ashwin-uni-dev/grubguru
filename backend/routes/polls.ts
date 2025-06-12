@@ -9,7 +9,9 @@ const controller = PollController.create();
 router.use(userIdParser);
 
 router.post('/', (req: Request, res: Response) => controller.createPoll(req, res));
-router.post('/:id', (req: Request, res: Response) => controller.vote(req, res));
+router.post('/:id/votes', (req: Request, res: Response) => controller.vote(req, res));
+router.post('/:id/options', (req: Request, res: Response) => controller.addOption(req, res));
 router.get('/:id', (req: Request, res: Response) => controller.getPoll(req, res));
+router.delete('/:id', (req: Request, res: Response) => controller.deletePoll(req, res));
 
 export default router;
