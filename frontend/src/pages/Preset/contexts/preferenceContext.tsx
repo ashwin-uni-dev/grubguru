@@ -10,6 +10,7 @@ interface PreferencesContextType {
     setPresetName: (presetName: string) => void;
     preferences: UserPreference[];
     addOrUpdatePreference: (newOrUpdatedPreference: UserPreference) => void;
+    removePreference: (id: string) => void;
 }
 
 export const STORAGE_KEY = 'userPreferences';
@@ -68,11 +69,16 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
         });
     };
 
+    const removePreference = (id: string) => {
+        setPreferences(prevPreferences => prevPreferences.filter(pref => pref.id !== id.toLowerCase()));
+    }
+
     const contextValue: PreferencesContextType = {
         preferences,
         presetName,
         setPresetName,
         addOrUpdatePreference,
+        removePreference
     };
 
     return (

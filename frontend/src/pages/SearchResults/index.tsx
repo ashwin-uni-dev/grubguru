@@ -20,11 +20,11 @@ const SearchResults = () => {
     return (
         <BackablePage title={<Search defaultValue={searchQuery} submit={handleSubmit} />}>
             <Layout back={true}>
-                <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4'>
+                <div className='grid lg:grid-cols-2 sm:grid-cols-1'>
                     {
                         foods != null ?
                             <>
-                                <p>{foods.length} results for {searchQuery}</p>
+                                <p className='text-gray-500 text-sm'>{foods.length} results for {searchQuery}</p>
                                 {
                                     foods.map((food: any, index) => (
                                         <div key={index}>

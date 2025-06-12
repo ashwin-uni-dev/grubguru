@@ -1,12 +1,8 @@
 import React, {useEffect, useMemo, useState} from "react";
 import BackablePage from "../../components/BackablePage";
 import Layout from "../../components/Layout";
-import FoodListItem from "../../components/FoodListItem";
-import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
 import { useFoods } from './hooks/useFoods';
-import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import ActionButton from "../../components/ActionButton";
 import FilterableFoods from "../../components/FilterableFoods";
 
 const FoodListPage = () => {

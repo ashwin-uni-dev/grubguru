@@ -13,7 +13,7 @@ import Badge from "../../../components/Badge";
 
 const Preferences = () => {
     const navigate = useNavigate();
-    const { preferences, presetName } = usePreferences();
+    const { preferences, presetName, removePreference } = usePreferences();
 
     const [isSaving, setIsSaving] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -118,6 +118,7 @@ const Preferences = () => {
                                     setModalOpen(true);
                                     setModal(preference.modal);
                                 }}
+                                onRemove={() => removePreference(preference.name) }
                                 key={index}
                             >
                                 {selectionDisplay}

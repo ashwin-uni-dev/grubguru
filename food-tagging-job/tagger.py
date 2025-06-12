@@ -14,7 +14,7 @@ class Tagger:
         if word in keywords:
             return True
         
-        hypernyms = get_all_hypernyms_recursive(word)
+        hypernyms = get_all_hypernyms_recursive(word, max_depth=2)
         for hypernym in hypernyms:
             if hypernym in keywords:
                 return True

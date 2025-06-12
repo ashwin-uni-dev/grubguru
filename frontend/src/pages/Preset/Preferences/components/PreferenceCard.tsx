@@ -1,13 +1,15 @@
 import { DynamicIcon } from "lucide-react/dynamic";
+import { Trash } from 'lucide-react'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     preference: string;
     description: string;
     icon: any;
+    onRemove?: () => void;
     children?: React.ReactNode;
 }
 
-const PreferenceCard = ({ preference, icon, description, children, ...rest }: Props) => {
+const PreferenceCard = ({ preference, icon, description, children, onRemove, ...rest }: Props) => {
     return (
         <div className='flex flex-col gap-2 p-4 rounded-xl'>
             <div className='flex flex-row gap-3 items-center'  {...rest}>
@@ -23,8 +25,13 @@ const PreferenceCard = ({ preference, icon, description, children, ...rest }: Pr
             {children &&
                 <>
                     <hr/>
-                    <div className="text-sm mt-1 flex flex-row flex-wrap w-full gap-2">
-                        {children}
+                    <div className="flex flex-row items-start">
+                        <div className="text-sm flex flex-row flex-wrap w-full gap-2">
+                            {children}
+                        </div>
+                        <div onClick={onRemove} className='bg-red-500 p-2 rounded-lg'>
+                            <Trash size={20} color='white'/>
+                        </div>
                     </div>
                 </>
             }
