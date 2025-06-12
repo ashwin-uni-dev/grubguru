@@ -27,7 +27,7 @@
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "random-useragent": "^0.5.0",
-    "vercel": "^42.2.0"
+    "vercel": "^28.18.5"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",

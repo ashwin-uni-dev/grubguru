@@ -16,16 +16,21 @@ const isProd = process.env.NODE_ENV === 'production';
 const app = express();
 
 app.set('trust proxy', 1);
+const allowedOrigins = ['http://localhost:3000', 'https://grubguru.vercel.app'];
 
+const corsOptions = {
+    origin: function (origin: any, callback: any) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, origin);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://grubguru.vercel.app'],
-    credentials: true
-}));
-app.options('*', cors({
-    origin: ['http://localhost:3000', 'https://grubguru.vercel.app'],
-    credentials: true
-}));
 app.use(
     session({
         secret: process.env.SESSION_SECRET || 'supersecret',

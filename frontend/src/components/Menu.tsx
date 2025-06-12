@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Home, Users, Settings, Bell, BellDot } from 'lucide-react';
+import {Home, Users, Bell, BellDot, LogOut} from 'lucide-react';
 import {useNavigate} from "react-router-dom";
 import {useNotifs} from '../hooks/useNotifs'
 
@@ -31,8 +31,8 @@ const Menu = () => {
                     <Users strokeWidth={2} color='white' />
                 </button>
 
-                <button className="flex flex-col items-center text-sm">
-                    <Settings strokeWidth={2} color='white' />
+                <button className="flex flex-col items-center text-sm" onClick={() => navigate('/login')}>
+                    <LogOut strokeWidth={2} color='white' />
                 </button>
             </nav>
         </div>

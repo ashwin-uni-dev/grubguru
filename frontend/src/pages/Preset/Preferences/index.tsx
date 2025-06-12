@@ -1,5 +1,4 @@
 import ProgressivePage from "../../../components/ProgressivePage";
-import Layout from "../../../components/Layout";
 import React, { useState } from "react"; // Import useState
 import PreferenceCard from "./components/PreferenceCard";
 import {useNavigate} from "react-router-dom";
@@ -17,26 +16,23 @@ const Preferences = () => {
 
     const [isSaving, setIsSaving] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [modal, setModal] = useState(<></>);
+    const [currentModalType, setCurrentModalType] = useState<string | null>(null);
 
     const preferenceOptions = [
         {
             name: 'Mood',
             icon: 'hamburger',
             description: 'What type of food do you want?',
-            modal: <Mood isOpen={modalOpen} onClose={() => { setModalOpen(false) }} />
         },
         {
             name: 'Budget',
             icon: 'hand-coins',
             description: 'How much money are you ready to spend?',
-            modal: <Budget isOpen={modalOpen} onClose={() => { setModalOpen(false) }} />
         },
         {
             name: 'Nutrition',
             icon: 'leaf',
-            description: 'Set any dietary preferences / nutritional goals?',
-            modal: <Nutrition isOpen={modalOpen} onClose={() => { setModalOpen(false) }} />
+            description: 'Set any dietary preferences / nutritional goals',
         },
     ]
 
@@ -62,6 +58,20 @@ const Preferences = () => {
         }
     }
 
+    const renderModal = () => {
+        const commonProps = { isOpen: modalOpen, onClose: () => setModalOpen(false) };
+        switch (currentModalType) {
+            case 'Mood':
+                return <Mood {...commonProps} />;
+            case 'Budget':
+                return <Budget {...commonProps} />;
+            case 'Nutrition':
+                return <Nutrition {...commonProps} />;
+            default:
+                return null;
+        }
+    };
+
     return (
         <>
             <ProgressivePage title='Setup Your Preferences' action={() => handleDone()} final={true}>
@@ -79,8 +89,8 @@ const Preferences = () => {
                                 case 'mood':
                                     selectionDisplay = (
                                         <>
-                                            { selected.value.map((mood: string, index: number) => (
-                                                <Badge>{ mood }</Badge>
+                                            { selected.value.map((mood: string, idx: number) => (
+                                                <Badge key={idx}>{ mood }</Badge>
                                             ))}
                                         </>
                                     )
@@ -92,16 +102,16 @@ const Preferences = () => {
                                     const { minCalories, maxCalories, tags } = selected.value;
                                     selectionDisplay = (
                                         <>
-                                            <Badge>
+                                            <Badge key="min-cal">
                                                 <p className='text-purple-500 font-semibold mr-1'>Min Calories </p>
                                                 { minCalories }
                                             </Badge>
-                                            <Badge>
+                                            <Badge key="max-cal">
                                                 <p className='text-purple-500 font-semibold mr-1'>Max Calories </p>
                                                 { maxCalories }
                                             </Badge>
-                                            { tags.map((tag: string, index: number) => (
-                                                <Badge>{ tag }</Badge>
+                                            { tags.map((tag: string, idx: number) => (
+                                                <Badge key={idx}>{ tag }</Badge>
                                             ))}
                                         </>
                                     )
@@ -116,7 +126,7 @@ const Preferences = () => {
                                 icon={preference.icon}
                                 onClick={() => {
                                     setModalOpen(true);
-                                    setModal(preference.modal);
+                                    setCurrentModalType(preference.name);
                                 }}
                                 onRemove={() => removePreference(preference.name) }
                                 key={index}
@@ -129,7 +139,7 @@ const Preferences = () => {
             </ProgressivePage>
             <WaitScreen isVisible={isSaving} message='Saving your preset...' />
 
-            { modalOpen && modal }
+            { modalOpen && renderModal() }
         </>
     )
 }
