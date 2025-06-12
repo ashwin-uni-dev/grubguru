@@ -1,60 +1,70 @@
-import Layout from "../../../components/Layout";
 import React, { useState } from "react";
 import { usePreferences } from "../contexts/preferenceContext";
-import {useNavigate} from "react-router-dom";
-import ProgressivePage from "../../../components/ProgressivePage";
 
-const Mood = () => {
-    const navigate = useNavigate();
+interface MoodModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+const moodOptions = ['Sweet', 'Chinese', 'Indian', 'Italian'];
+
+const Mood = ({ isOpen, onClose }: MoodModalProps) => {
     const { addOrUpdatePreference } = usePreferences();
-    const moodOptions = [
-        'Salty', 'Sweet', 'Spicy', 'Savory', 'Bitter', 'Sour', 'Umami',
-        'Comfort ViewPreset', 'Healthy', 'Light', 'Heavy', 'Refreshing', 'Creamy'
-    ];
-
     const [selectedMoods, setSelectedMoods] = useState<string[]>([]);
 
     const toggleMood = (mood: string) => {
-        setSelectedMoods(prevSelectedMoods => {
-            if (prevSelectedMoods.includes(mood)) {
-                return prevSelectedMoods.filter(m => m !== mood);
-            } else {
-                return [...prevSelectedMoods, mood];
-            }
-        });
+        setSelectedMoods(prev =>
+            prev.includes(mood)
+                ? prev.filter(m => m !== mood)
+                : [...prev, mood]
+        );
     };
 
     const handleDone = () => {
-        addOrUpdatePreference({ id: 'mood', value: selectedMoods });
-        navigate('../preferences');
-    }
+        addOrUpdatePreference({ id: "mood", value: selectedMoods });
+        onClose();
+    };
+
+    if (!isOpen) return null;
 
     return (
-        <Layout back={true}>
-            <ProgressivePage title='Mood' action={handleDone} final={true}>
-                <p className="text-sm text-gray-500 mt-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+                <h2 className="text-xl font-bold mb-2">Mood</h2>
+                <p className="text-sm text-gray-500 mb-4">
                     Select the taste you are in the mood for.
                 </p>
-                <div className='flex-grow grid grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-4 gap-4 mb-8 overflow-y-auto'>
+
+                <div className="grid grid-cols-2 gap-3 mb-6">
                     {moodOptions.map(mood => (
                         <button
                             key={mood}
                             onClick={() => toggleMood(mood)}
-                            className={`
-                                p-2 rounded-lg border-2 text-center font-medium transition-colors duration-200
-                                ${selectedMoods.includes(mood)
+                            className={`p-2 rounded-lg border-2 font-medium transition-colors duration-200
+                ${selectedMoods.includes(mood)
                                 ? 'bg-purple-500 border-purple-500 text-white'
-                                : 'bg-white border-gray text-gray-700 hover:bg-gray-100'
-                            }
-                            `}
+                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'
+                            }`}
                         >
                             {mood}
                         </button>
                     ))}
                 </div>
-            </ProgressivePage>
-        </Layout>
+
+                <div className="flex justify-end gap-3">
+                    <button onClick={onClose} className="text-gray-500 hover:underline">
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleDone}
+                        className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600"
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
     );
-}
+};
 
 export default Mood;

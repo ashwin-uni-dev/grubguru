@@ -11,39 +11,43 @@ const Preset = () => {
     const { presetName, setPresetName } = usePreferences();
     const suggestions = ["Lunch Prep", "Weeknight Quick", "Low Carb"];
 
+    const proceed = () => {
+        if (presetName.trim() === '') {
+            alert('Preset Name can not be empty!')
+            return;
+        }
+        navigate('preferences')
+    }
+
     return (
-        <Layout back={false}>
-            <ProgressivePage title="New Preset" action={() => navigate('preferences')}>
-                <span className="font-medium">Preset name</span>
-                <Input
-                    placeholder="Enter your preset name..."
-                    value={presetName}
-                    onChange={(e:any) => setPresetName(e.target.value)}
-                />
-                <p className="text-xs text-right text-gray-400 mt-1">
-                    {presetName.length}/30 characters
-                </p>
+            <ProgressivePage title="New Preset" action={proceed}>
+                <div>
+                    <span className="font-medium">Preset name</span>
+                    <Input
+                        placeholder="Enter your preset name..."
+                        value={presetName}
+                        onChange={(e:any) => setPresetName(e.target.value)}
+                    />
 
-                <p className="text-sm text-gray-500 mt-4">
-                    Choose a name that describes when or how you’ll use this preset.
-                </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Choose a name that describes when or how you’ll use this preset.
+                    </p>
 
-                <div className="mt-6">
-                    <p className="text-sm font-semibold mb-2">Suggestions:</p>
-                    <div className="flex flex-wrap gap-2">
-                        {suggestions.map((name) => (
-                            <Badge
-                                key={name}
-                                onClick={() => setPresetName(name)}
-                            >
-                                <p className='text-sm'>{name}</p>
-                            </Badge>
-                        ))}
+                    <div className="mt-6">
+                        <p className="text-sm font-semibold mb-2">Suggestions:</p>
+                        <div className="flex flex-wrap gap-2">
+                            {suggestions.map((name) => (
+                                <Badge
+                                    key={name}
+                                    onClick={() => setPresetName(name)}
+                                >
+                                    <p className='text-sm'>{name}</p>
+                                </Badge>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </ProgressivePage>
-
-        </Layout>
     );
 }
 

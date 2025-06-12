@@ -1,13 +1,14 @@
-import Layout from "../../../components/Layout";
 import React, { useState } from "react";
 import { usePreferences } from "../contexts/preferenceContext";
-import DonePreference from "../components/donePreference";
-import ProgressivePage from "../../../components/ProgressivePage";
-import {useNavigate} from "react-router-dom";
 
-const Budget = () => {
+interface BudgetModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+const Budget = ({ isOpen, onClose }: BudgetModalProps) => {
     const { addOrUpdatePreference } = usePreferences();
-    const navigate = useNavigate();
+
     const [budget, setBudget] = useState<number>(10);
 
     const minBudget = 0;
@@ -19,42 +20,62 @@ const Budget = () => {
     };
 
     const handleDone = () => {
-        addOrUpdatePreference({ id: 'budget', value: budget });
-        navigate('../preferences');
-    }
+        addOrUpdatePreference({ id: "budget", value: budget });
+        onClose();
+    };
+
+    if (!isOpen) return null;
 
     return (
-        <Layout back={true}>
-            <div className='flex flex-col h-full'>
-                <ProgressivePage title="What's your budget" action={handleDone} final={true}>
-                    <div className='mt-6'>
-                        <p>
-                            £
-                            <input
-                                type='number'
-                                min={minBudget}
-                                max={maxBudget}
-                                step={stepBudget}
-                                value={budget}
-                                onChange={handleBudgetChange}
-                                className='text-4xl font-semibold tracking-tighter inline-block border-b-2'
-                                style={{ width: `${String(budget).length * 20 + 20}px` }}
-                            />
-                        </p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
+                <h2 className="text-xl font-bold mb-4">What's your budget?</h2>
+
+                {/* Budget Input Section */}
+                <div className="space-y-4 mb-6">
+                    <p className="text-4xl font-semibold tracking-tighter">
+                        £
                         <input
-                            type='range'
+                            type="number"
                             min={minBudget}
                             max={maxBudget}
                             step={stepBudget}
                             value={budget}
                             onChange={handleBudgetChange}
-                            className='w-full'
+                            className="inline-block border-b-2 focus:outline-none ml-1"
+                            style={{ width: `${String(budget).length * 20 + 20}px` }}
                         />
-                    </div>
-                </ProgressivePage>
+                    </p>
+
+                    <input
+                        type="range"
+                        min={minBudget}
+                        max={maxBudget}
+                        step={stepBudget}
+                        value={budget}
+                        onChange={handleBudgetChange}
+                        className="w-full"
+                    />
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-3 mt-4">
+                    <button
+                        onClick={onClose}
+                        className="text-gray-500 hover:underline transition"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleDone}
+                        className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition"
+                    >
+                        Save
+                    </button>
+                </div>
             </div>
-        </Layout>
+        </div>
     );
-}
+};
 
 export default Budget;

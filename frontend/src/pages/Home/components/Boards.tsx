@@ -6,7 +6,7 @@ import { Heart } from "lucide-react";
 import BoardNameModal from "./BoardNameModal";
 import { BackendRequest } from "../../../lib/api";
 import {useNavigate} from "react-router-dom";
-import ActionButton from "./ActionButton";
+import ActionButton from "../../../components/ActionButton";
 
 const Boards = () => {
     const { boards, getBoards } = useBoards();

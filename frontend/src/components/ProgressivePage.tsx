@@ -12,16 +12,19 @@ const ProgressivePage = ({ title, action, final, children }: Props) => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col h-full min-h-[80vh]">
+        <div className="flex flex-col h-screen p-6 items-center">
             <div>
                 <h1 className="text-2xl font-bold tracking-tighter mb-2">{title}</h1>
             </div>
 
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex flex-col overflow-y-auto items-center">
                 {children}
             </div>
 
-            <div className="flex justify-end mt-4">
+            <div className="mt-auto flex justify-between w-full">
+                <button className="text-purple-500 font-bold" onClick={() => navigate(-1)}>
+                    Back
+                </button>
                 <button className="text-purple-500 font-bold" onClick={action}>
                     { final? 'Done' : 'Next' }
                 </button>

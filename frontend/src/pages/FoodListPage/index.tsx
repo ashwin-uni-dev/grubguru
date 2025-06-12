@@ -1,33 +1,36 @@
+import React, {useEffect, useMemo, useState} from "react";
 import BackablePage from "../../components/BackablePage";
 import Layout from "../../components/Layout";
 import FoodListItem from "../../components/FoodListItem";
 import FoodListItemSkeleton from "../../components/skeletons/FoodItemSkeleton";
-import React from "react";
 import { useFoods } from './hooks/useFoods';
+import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import ActionButton from "../../components/ActionButton";
+import FilterableFoods from "../../components/FilterableFoods";
 
 const FoodListPage = () => {
     const { foods, name } = useFoods();
+    const [position, setPosition] = useState<[number, number] | null>(null);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                setPosition([pos.coords.latitude, pos.coords.longitude]);
+            },
+            () => {
+                setPosition([51.505, -0.09]); // fallback (London)
+            }
+        );
+    }, []);
 
     return (
-        <BackablePage title={<p className='font-semibold'>{ name }</p>}>
+        <BackablePage title={<p className='font-semibold'>{name}</p>}>
             <Layout back={true}>
-                <div className='grid lg:grid-cols-2 sm:grid-cols-1 mt-4 overflow-y-scroll max-h-screen pb-5'>
-                    {
-                        foods.length ? foods.map((food: any, index) => (
-                            <div key={index}>
-                                <FoodListItem food={food} />
-                                <hr className='my-4'/>
-                            </div>
-                        )) : (
-                            <div className='flex flex-col gap-4'>
-                                <FoodListItemSkeleton/><FoodListItemSkeleton/><FoodListItemSkeleton/>
-                            </div>
-                        )
-                    }
-                </div>
+                <FilterableFoods foods={foods} list={true} />
             </Layout>
         </BackablePage>
-    )
-}
+    );
+};
 
 export default FoodListPage;
