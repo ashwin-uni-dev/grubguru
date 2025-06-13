@@ -49,7 +49,8 @@ const PollCodeModal: React.FC<PollCodeModalProps> = ({ isOpen, onClose, pollCode
         <div className='flex bg-black/40 fixed left-0 top-0 w-screen h-screen p-6 items-center justify-center z-50'>
             <div className='flex flex-col bg-white rounded-lg p-6 max-w-md w-full shadow-lg'>
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold">Poll Created!</h2>
+                    { pollCode != 0 ? <h2 className="text-2xl font-bold">Poll Created!</h2> :
+                        <h2 className="text-2xl font-bold">Creating Poll...</h2> }
                     <button
                         onClick={onClose}
                         className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -62,7 +63,7 @@ const PollCodeModal: React.FC<PollCodeModalProps> = ({ isOpen, onClose, pollCode
                 <p className="text-gray-700 mb-4">Share this code with your friends to invite them to your poll.</p>
 
                 <div className="bg-purple-100 border border-purple-300 rounded-lg p-4 mb-4 flex items-center justify-between font-mono text-lg text-purple-800 break-all select-all">
-                    <span className="flex-grow pr-2">{pollCode}</span>
+                    <span className="flex-grow pr-2">{pollCode == 0 ? 'Loading...' : pollCode}</span>
                     <button
                         onClick={handleCopy}
                         className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-3 py-2 text-sm ml-2 flex items-center gap-1 transition-colors duration-200"
@@ -156,6 +157,8 @@ const PollSection = () => {
     const { isPollMode, getActivePollCode, joinPoll }  = usePollContext();
 
     const createPoll = async () => {
+        setShowPollCodeModal(true);
+
         const code = await BackendRequest
             .to('polls')
             .post({})
@@ -163,7 +166,6 @@ const PollSection = () => {
 
         joinPoll(code);
         setPollCode(code);
-        setShowPollCodeModal(true);
     }
 
     return (

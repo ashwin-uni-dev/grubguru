@@ -47,9 +47,7 @@ const Home = () => {
                         <Badge key={index} onClick={() => viewPreset(preset)}>
                             <p className='text-sm'>{ preset.id }</p>
                         </Badge>
-                    )) : (
-                        <><BadgeSkeleton/><BadgeSkeleton/><BadgeSkeleton/></>
-                    )
+                    )) : new Array(10).fill(0).map(_ => <BadgeSkeleton/>)
                 }
             </HorizontalSection>
             <div className='flex flex-row gap-2 mt-4'>

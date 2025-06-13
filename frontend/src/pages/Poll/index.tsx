@@ -18,7 +18,7 @@ const Poll = () => {
         <BackablePage title={<p className='font-semibold'>Active Poll</p>}>
             <Layout back={true}>
                 <button onClick={handleLeave} className='bg-red-500 text-sm text-white px-3 py-2 rounded-lg mb-2'>Leave Poll</button>
-                <PollVotes votes={pollData.votes} />
+                <PollVotes pollData={pollData} />
             </Layout>
         </BackablePage>
     )

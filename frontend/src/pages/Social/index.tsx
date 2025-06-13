@@ -5,6 +5,7 @@ import {useFollowing} from "./hooks/useFollowing";
 import {useNavigate} from "react-router-dom";
 import FriendListItem from "../FriendSearch/components/FriendListItem";
 import PollSection from "./components/PollSection";
+import FriendSkeleton from "../FriendSearch/components/FriendSkeleton";
 
 const Social = () => {
     const navigate = useNavigate();
@@ -25,13 +26,13 @@ const Social = () => {
                 <div className='flex flex-col mt-2'>
                     <p className='text-xl font-semibold'>Following</p>
                         {
-                            following != null && following.map((user: any) => (
+                            following != null ? following.map((user: any) => (
                                 <FriendListItem
                                     key={user.username}
                                     user={user}
                                     following={following}
                                     setFollowing={setFollowing} />
-                            ))
+                            )) : new Array(10).fill(0).map(_ => <FriendSkeleton />)
                         }
                 </div>
             </Layout>

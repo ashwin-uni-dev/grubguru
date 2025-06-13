@@ -17,7 +17,7 @@ interface PollData {
 }
 
 interface PollContextType {
-    pollData: PollData;
+    pollData: null | PollData;
     isPollMode: boolean;
     votedFoods: any[];
     voteFood: (food: any) => void;
@@ -33,10 +33,7 @@ interface PollProviderProps {
 }
 
 export const PollProvider: React.FC < PollProviderProps > = ({children}) => {
-    const [pollData, setPollData] = useState < PollData > ({
-        votes: [],
-        options: []
-    });
+    const [pollData, setPollData] = useState <PollData | null>(null);
     const [isPollMode, setIsPollMode] = useState(!!localStorage.getItem('pollCode'));
 
     const [votedFoods, setVotedFoods] = useState(() => {

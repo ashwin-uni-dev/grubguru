@@ -69,19 +69,14 @@ const FilterableFoods = ({ foods, list }: any) => {
                     ) :
                         <>
                             { list &&
-                                <>
+                                new Array(10).fill(0).map(_ =>
                                     <FoodListItemSkeleton/>
-                                    <FoodListItemSkeleton/>
-                                    <FoodListItemSkeleton/>
-                                </>
+                                )
                             }
                             { !list &&
-                                    <>
-                                        <FoodCardSkeleton />
-                                        <FoodCardSkeleton />
-                                        <FoodCardSkeleton />
-                                    </>
-
+                                new Array(10).fill(0).map(_ =>
+                                    <FoodCardSkeleton />
+                                )
                             }
                         </>
                     }
