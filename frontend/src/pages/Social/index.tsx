@@ -4,8 +4,6 @@ import React, {useEffect, useState} from "react";
 import {useFollowing} from "./hooks/useFollowing";
 import {useNavigate} from "react-router-dom";
 import FriendListItem from "../FriendSearch/components/FriendListItem";
-import {BackendRequest} from "../../lib/api";
-import {joinPoll} from "../../lib/poll";
 import PollSection from "./components/PollSection";
 
 const Social = () => {

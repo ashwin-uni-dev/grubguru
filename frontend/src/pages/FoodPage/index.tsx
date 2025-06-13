@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Store, MapPin, Heart, Pin, X } from 'lucide-react';
 import BackablePage from "../../components/BackablePage";
 import Layout from "../../components/Layout";
@@ -8,8 +8,7 @@ import ReviewPanel from "./components/reviewPanel";
 import {useUserBoards} from "./hooks/useUserBoards";
 import BoardSelection from "./components/BoardSelection";
 import { useNavigate } from 'react-router-dom';
-import {usePoll} from "../../hooks/usePoll";
-import {isPollMode} from "../../lib/poll";
+import {usePollContext} from "../../contexts/PollContext";
 
 const FoodInfo = () => {
     const food = JSON.parse(localStorage.getItem('selectedFood') || '{}');
@@ -22,7 +21,7 @@ const FoodInfo = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedBoard, setSelectedBoard] = useState<string>('');
     const {userBoards} = useUserBoards();
-    const { addOption } = usePoll();
+    const { voteFood, votedFoods, isPollMode } = usePollContext();
 
     const likeFood = () => {
         BackendRequest.to('users/likes').post({ foodId }).execute();
@@ -102,10 +101,16 @@ const FoodInfo = () => {
                             </a>
                         }
                         {
-                            isPollMode() &&
-                                <button className='bg-purple-500 text-white font-semibold rounded-lg p-2 whitespace-nowrap' onClick={() => addOption(food)}>
-                                    Add Store To Poll
+                            isPollMode && !votedFoods.includes(food.uberUrl) &&
+                                <button className='bg-purple-500 text-white font-semibold rounded-lg p-2 whitespace-nowrap' onClick={() => voteFood(food)}>
+                                    Vote For Food In Poll
                                 </button>
+                        }
+                        {
+                            isPollMode && votedFoods.includes(food.uberUrl) &&
+                            <button className='bg-purple-900 text-white font-semibold rounded-lg p-2 whitespace-nowrap'>
+                                You have voted for this food
+                            </button>
                         }
                     </div>
                 </div>

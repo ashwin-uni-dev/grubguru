@@ -1,17 +1,29 @@
-import { usePoll } from "../hooks/usePoll";
+import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {usePollContext} from "../contexts/PollContext";
 
 const PollMode = () => {
-    const { pollData } = usePoll();
+    const { pollData } = usePollContext();
+    const navigate = useNavigate();
+    const [voteCount, setVoteCount] = useState(0);
+
+    useEffect(() => {
+        if (pollData && pollData.votes) {
+            const votesArray = Object.values(pollData.votes);
+            const totalVotes = votesArray.reduce((acc: number, vote: any) => acc + (vote.count || 0), 0);
+            setVoteCount(totalVotes);
+        } else {
+            setVoteCount(0);
+        }
+    }, [pollData]);
+
     return (
-        <div className='fixed top-[10vh] w-screen flex justify-center z-40'>
-            <div className='bg-purple-500 rounded-full p-4 text-white text-xl shadow-lg'>
-                <p>You are currently in a poll.</p>
-                <div className='flex flex-row justify-around items-center text-sm'>
-                    <p>Votes <span className='font-bold'>{ pollData.votes.length }</span></p>
-                    <p>Options <span className='font-bold'>{ pollData.options.length }</span></p>
-                </div>
-            </div>
-        </div>
+         <div className='flex flex-row w-screen bg-purple-500 justify-between py-2 px-4 text-white'
+              onClick={() => navigate('/live-poll')}>
+                <p>Tap here to see your live poll.</p>
+                <p>Votes <span className='font-semibold'>{ voteCount }</span></p>
+         </div>
+
     )
 }
 

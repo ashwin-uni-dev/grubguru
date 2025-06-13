@@ -13,10 +13,10 @@ export class PollController {
         res.send(pollId);
     }
 
-    async addOption(req: Request, res: Response) {
+    async voteFood(req: Request, res: Response) {
         const pollId = Number(req.params.id);
         const food = req.body.food;
-        await this.pollService.addOption(pollId, food);
+        await this.pollService.voteFood(pollId, food);
 
         res.send({});
     }

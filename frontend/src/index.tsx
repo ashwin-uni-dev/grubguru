@@ -20,6 +20,8 @@ import FoodListPage from "./pages/FoodListPage";
 import Social from "./pages/Social";
 import FriendSearch from "./pages/FriendSearch";
 import NotificationPage from './pages/NotificationPage';
+import Poll from './pages/Poll';
+import {PollProvider, PollProviderWrapper} from "./contexts/PollContext";
 
 
 const AnimatedRoutes = () => {
@@ -28,20 +30,24 @@ const AnimatedRoutes = () => {
     return (
         <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/food" element={<Food />}/>
-                <Route path="/food-view" element={<FoodListPage />}/>
-                <Route path="/social" element={<Social />} />
-                <Route path="/notifications" element={<NotificationPage />} />
-                <Route path="/social-search" element={<FriendSearch />} />
-                <Route path="/search-results" element={<SearchResults />} />
-                <Route path="/food-info" element={<FoodPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/reviews" element={<ReviewPage />} />
-                <Route path="/preset" element={<PreferenceRoutesWrapper />}>
-                    <Route index element={<Preset />} />
-                    <Route path="preferences" element={<Preferences />} />
+
+                <Route element={<PollProviderWrapper />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/food" element={<Food />} />
+                    <Route path="/food-view" element={<FoodListPage />} />
+                    <Route path="/social" element={<Social />} />
+                    <Route path="/notifications" element={<NotificationPage />} />
+                    <Route path="/social-search" element={<FriendSearch />} />
+                    <Route path="/search-results" element={<SearchResults />} />
+                    <Route path="/food-info" element={<FoodPage />} />
+                    <Route path="/live-poll" element={<Poll />} />
+                    <Route path="/reviews" element={<ReviewPage />} />
+                    <Route path="/preset" element={<PreferenceRoutesWrapper />}>
+                        <Route index element={<Preset />} />
+                        <Route path="preferences" element={<Preferences />} />
+                    </Route>
                 </Route>
             </Routes>
         </AnimatePresence>

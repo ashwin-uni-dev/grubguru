@@ -1,5 +1,4 @@
 import {Model, Types} from 'mongoose';
-import {IReview, Review} from "../schemas/review";
 import {IPoll, Poll} from "../schemas/poll";
 
 export class PollService {
@@ -19,13 +18,24 @@ export class PollService {
         return id;
     }
 
-    async addOption(pollCode: number, food: any) {
+    async voteFood(pollCode: number, food: any) {
         const poll = await this.pollModel.findOne({ id: pollCode });
-        poll!.options.push(food.storeInfo);
+
+        const foodStore = food.storeInfo;
+        const storeUrlKey = foodStore.storeUrl;
+
+        if (poll!.votes[storeUrlKey]) {
+            poll!.votes[storeUrlKey].count += 1;
+        } else {
+            poll!.votes[storeUrlKey] = {
+                count: 1,
+                storeInfo: foodStore
+            };
+        }
+
+        poll!.markModified('votes');
         await poll!.save();
     }
-
-    async vote(pollCode: number, food: any) {}
 
     deletePoll(id: number) {
         this.pollModel.deleteOne({ id });

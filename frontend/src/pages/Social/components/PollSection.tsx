@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {BackendRequest} from "../../../lib/api";
-import {getActivePollCode, isPollMode, joinPoll} from "../../../lib/poll";
-import {usePoll} from "../../../hooks/usePoll";
+import PollVotes from "../../Poll/components/PollVotes";
+import {usePollContext} from "../../../contexts/PollContext";
 
 interface PollCodeModalProps {
     isOpen: boolean; // Prop to control modal visibility
@@ -91,6 +91,7 @@ interface JoinPollModalProps {
 const JoinPollModal= ({ isOpen, onClose }: JoinPollModalProps) => {
     const [inputCode, setInputCode] = useState('');
     const [error, setError] = useState('');
+    const { joinPoll } = usePollContext();
 
     if (!isOpen) {
         return null;
@@ -105,6 +106,7 @@ const JoinPollModal= ({ isOpen, onClose }: JoinPollModalProps) => {
         setError('');
         joinPoll(Number(inputCode));
         setInputCode('');
+        onClose();
     };
 
     return (
@@ -117,7 +119,7 @@ const JoinPollModal= ({ isOpen, onClose }: JoinPollModalProps) => {
                         className="text-gray-400 hover:text-gray-600 transition-colors"
                         aria-label="Close modal"
                     >
-                        X
+                        x
                     </button>
                 </div>
 
@@ -151,8 +153,7 @@ const PollSection = () => {
     const [pollCode, setPollCode] = useState(0);
     const [showPollCodeModal, setShowPollCodeModal] = useState(false);
     const [showJoinPollModal, setShowJoinPollModal] = useState(false);
-    const poll = isPollMode();
-    const { pollData } = usePoll();
+    const { isPollMode, getActivePollCode, joinPoll }  = usePollContext();
 
     const createPoll = async () => {
         const code = await BackendRequest
@@ -167,25 +168,25 @@ const PollSection = () => {
 
     return (
         <>
-            <div>
-                <div className='flex flex-row items-center'>
-                    <p className='text-xl font-semibold mr-3'>Polls</p>
-                    {
-                        poll ?
-                            <p className='text-purple-500 font-semibold'>Active Poll Code: {getActivePollCode()}</p>
-                            : <button className='text-purple-500 font-semibold' onClick={createPoll}>
-                                + Create a poll
-                            </button>
-
-                    }
-                </div>
+            <div className='border w-full flex flex-row justify-between py-2 px-4 items-center'>
+                <p className='text-lg font-semibold mr-3'>Polls</p>
                 <div>
                     {
-                        poll ? pollData.options.map((option: any) => (
-                                <p className='text-gray-500 text-sm'>{option.name}</p>
-                            )) : <p className='text-gray-500 text-sm'>
-                                    No active poll. <span className='text-underline text-purple-500' onClick={() => setShowJoinPollModal(true)}>Join a poll here</span>
+                        isPollMode ?
+                            <p className='text-purple-500 font-semibold'>Active Poll Code: {getActivePollCode()}</p>
+                            :
+                            <div className='flex flex-row items-center gap-2'>
+                                <button className='text-purple-500 font-semibold' onClick={createPoll}>
+                                    Create a poll
+                                </button>
+                                <p className='text-gray-200'>
+                                    |
                                 </p>
+                                <button className='text-purple-500 font-semibold' onClick={() => setShowJoinPollModal(true)}>
+                                    Join a poll
+                                </button>
+                            </div>
+
                     }
                 </div>
             </div>

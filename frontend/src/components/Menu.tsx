@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Home, Users, Bell, BellDot, LogOut} from 'lucide-react';
 import {useNavigate} from "react-router-dom";
-import {useNotifs} from '../hooks/useNotifs'
-import PollMode from './PollMode';
-import { isPollMode } from '../lib/poll';
+import {useNotifs} from '../hooks/useNotifs';
 
 const BellIcon = ({ ...props }) => {
     const [newNotif, setNewNotif] = useState(false);
@@ -42,7 +40,6 @@ const Menu = () => {
                     </button>
                 </nav>
             </div>
-            { isPollMode() && <PollMode /> }
         </>
     );
 };
