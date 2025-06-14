@@ -1,7 +1,6 @@
 import { StorePageProcessor } from './storePageProcessor';
 
 const getStoreData = (storeJson: any) => {
-    console.log(storeJson)
     const { name, servesCuisine, openingHoursSpecification, image } = storeJson;
     const { longitude, latitude } = storeJson.geo;
     const { streetAddress: address, postalCode: postcode } = storeJson.address;
@@ -18,9 +17,11 @@ const getStoreData = (storeJson: any) => {
     }
 }
 
-// Fetches store info and food items from a store page
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
 export class StoreDataProcessor extends StorePageProcessor {
     async processStrategy(page: any): Promise<any[]> {
+        await delay(1000);
         const storeJson = await page.evaluate(() => {
             return JSON.parse(document.querySelector('[data-testid="store-loaded"] script')?.textContent || '{}');
         });
