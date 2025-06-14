@@ -1,12 +1,14 @@
 import { StorePageProcessor } from './storePageProcessor';
 
 const getStoreData = (storeJson: any) => {
-    const { name, servesCuisine, openingHoursSpecification } = storeJson;
+    console.log(storeJson)
+    const { name, servesCuisine, openingHoursSpecification, image } = storeJson;
     const { longitude, latitude } = storeJson.geo;
     const { streetAddress: address, postalCode: postcode } = storeJson.address;
 
     return {
         name,
+        image,
         longitude,
         latitude,
         servesCuisine,

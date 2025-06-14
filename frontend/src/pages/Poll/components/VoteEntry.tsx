@@ -1,5 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import Image from "../../../components/Image";
 
 const VoteEntry = ({ voteEntry }: any) => {
     const storeInfo = voteEntry.storeInfo;
@@ -12,34 +13,24 @@ const VoteEntry = ({ voteEntry }: any) => {
     }
 
     return (
-        <div
-            key={storeUrl}
-            className='flex flex-col md:flex-row justify-between items-start md:items-center
-                                       bg-white rounded-xl p-4 border border-gray-200
-                                       transition-all duration-300 ease-in-out'
-        >
-            <div className='flex-grow mb-3 md:mb-0'>
-                <p className='font-bold text-lg tracking-tighter'>
-                    {storeInfo.name}
-                </p>
-                <p className='text-purple-600 font-semibold text-md mb-1'>
-                    {voteEntry.count} {voteEntry.count === 1 ? 'vote' : 'votes'}
-                </p>
-                {storeInfo.servesCuisine && storeInfo.servesCuisine.length > 0 && (
-                    <p className='text-gray-500 text-sm'>
-                        {storeInfo.servesCuisine.join(', ')}
-                    </p>
-                )}
-            </div>
+        <div>
+            <div className='flex flex-col w-full overflow-hidden'>
+                <div className='w-full rounded-lg h-64 border flex justify-center items-center bg-gray-100 overflow-hidden'>
+                    <img className='object-contains' src={storeInfo.image[storeInfo.image.length - 1]} />
+                </div>
 
-            <div className='flex flex-row gap-2 mt-1 md:mt-0'>
-                <button
-                    onClick={() => viewStore(storeInfo)}
-                    className='text-purple-500 font-semibold
+                <div className='flex-grow flex flex-col justify-between mt-2'>
+                    <p className='text-md font-semibold truncate'>{storeInfo.name}</p>
+                    <p className='text-purple-500 font-semibold'>{voteEntry.count} votes</p>
+                    <p className='text-sm text-gray-500 truncate'>{storeInfo.servesCuisine.join(', ')}</p>
+                    <div
+                        onClick={() => viewStore(storeInfo)}
+                        className='text-purple-500 font-semibold
                                                rounded-lg whitespace-nowrap'
-                >
-                    View Store
-                </button>
+                    >
+                        View Store
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -10,6 +10,7 @@ import {StoreDataProcessor} from "./processors/storeDataProcessor";
 import {IStore, Store} from "../schemas/store";
 import {StorePageProcessor} from "./processors/storePageProcessor";
 import { PageResult } from "./processors/pageProcessor";
+import * as fs from 'node:fs/promises';
 
 dotenv.config();
 
@@ -21,6 +22,17 @@ const storeLogger = new MongoLogger<IStore>(Store);
 const emptyLogger = {
   log: (toLog: any[]) => {}
 }
+
+const readStoresFromFile = async (filePath: string): Promise<string[]> => {
+  try {
+    const fileContent = await fs.readFile(filePath, { encoding: 'utf8' });
+    const stores = fileContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    return stores;
+  } catch (error) {
+    console.error(`Error reading stores from ${filePath}:`, error);
+    return [];
+  }
+};
 
 const storeValidator = (store: any) => {
   const { servesCuisine, name } = store[0];
@@ -39,12 +51,27 @@ const storeValidator = (store: any) => {
   return true;
 }
 
+const scrapeStores = async (stores: string[]) => {
+
+  const foodItemProcessor = new FoodItemProcessor(scraper, consoleLogger, foodItemLogger);
+  const storeDataProcessor = new StoreDataProcessor(scraper, consoleLogger, storeLogger);
+
+  for (let storeUrl of stores) {
+    console.log('processing: ', storeUrl);
+    storeDataProcessor.setStoreUrl(storeUrl);
+    const {valid}: PageResult = await storeDataProcessor.process(storeUrl, storeValidator);
+    if (valid) {
+      foodItemProcessor.setStoreUrl(storeUrl);
+      await foodItemProcessor.process(storeUrl);
+      console.log('processed: ', storeUrl);
+    }
+  }
+}
+
 const scrapeLocation = async (LOCATION_URL: string, processedStoreUrls: Set<string>) => {
   await mongoose.connect(process.env.MONGO_URI || '');
 
   const storeProcessor = new StoreProcessor(scraper, consoleLogger, emptyLogger);
-  const foodItemProcessor = new FoodItemProcessor(scraper, consoleLogger, foodItemLogger);
-  const storeDataProcessor = new StoreDataProcessor(scraper, consoleLogger, storeLogger);
   const neighborhoodProcessor = new NeighborhoodProcessor(scraper, consoleLogger, emptyLogger);
 
   console.log('fetching the stores from location URL...')
@@ -53,18 +80,7 @@ const scrapeLocation = async (LOCATION_URL: string, processedStoreUrls: Set<stri
   console.log('Filtering out stores already processed in this run...');
   const newStoresToProcess = stores.filter((storeUrl: string) => !processedStoreUrls.has(storeUrl));
 
-  for (let storeUrl of newStoresToProcess) {
-    storeDataProcessor.setStoreUrl(storeUrl);
-    const { valid }: PageResult = await storeDataProcessor.process(storeUrl, storeValidator);
-    if (valid) {
-      console.log('processing: ', storeUrl);
-      foodItemProcessor.setStoreUrl(storeUrl);
-      await foodItemProcessor.process(storeUrl);
-      console.log('processed: ', storeUrl);
-    }
-
-    processedStoreUrls.add(storeUrl);
-  }
+  await scrapeStores(newStoresToProcess);
 
   const {result: newLocations} = await neighborhoodProcessor.process(LOCATION_URL);
 
@@ -73,7 +89,7 @@ const scrapeLocation = async (LOCATION_URL: string, processedStoreUrls: Set<stri
 };
 
 
-const scrape = async () => {
+const scrapeSouthKen = async () => {
   const processedStoreUrls = new Set<string>();
   const processedLocations = new Set<string>();
 
@@ -110,4 +126,11 @@ const scrape = async () => {
   await mongoose.disconnect();
 }
 
-scrape();
+const scrapeStoresTxt = async () => {
+  await mongoose.connect(process.env.MONGO_URI || '');
+  const stores: string[] = await readStoresFromFile("./scraping/stores.txt");
+
+  await scrapeStores(stores);
+}
+
+scrapeStoresTxt();

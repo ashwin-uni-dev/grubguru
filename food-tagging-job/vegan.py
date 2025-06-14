@@ -54,4 +54,4 @@ vegan_alternatives = {
     'plant protein', 'beyond meat', 'impossible', 'vegan mayo'
 }
 
-vegan_tag = Tag(negative_keywords=negative_keywords | negative_hypernyms, positive_keywords=vegan_alternatives)
+vegan_tag = Tag(negative_keywords=negative_keywords | negative_hypernyms, positive_keywords=vegan_alternatives, default=False)

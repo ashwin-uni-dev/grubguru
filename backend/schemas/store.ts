@@ -9,6 +9,7 @@ export interface IStore extends Document {
     address: string;
     postcode: string;
     openingHoursSpecification: any[];
+    image: string[];
 }
 
 export const storeSchema = new Schema({
@@ -19,7 +20,8 @@ export const storeSchema = new Schema({
     servesCuisine: [String],
     address: String,
     postcode: String,
-    openingHoursSpecification: [{}]
+    openingHoursSpecification: [{}],
+    image: [String]
 });
 
 export const Store = model<IStore>('Store', storeSchema);

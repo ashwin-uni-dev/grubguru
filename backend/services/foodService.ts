@@ -110,12 +110,13 @@ export class FoodService {
             pipeline.push({ $match: matchStage });
         }
 
+        console.log(matchStage);
+
         return pipeline;
     }
 
     async getFoods(queryParams: any): Promise<IFoodItem[]> {
         try {
-            console.log(queryParams);
             const pipeline = this.buildPipeline(queryParams);
 
             return await this.foodItemModel.aggregate([...pipeline, ...this.storeInfoPipeline]);

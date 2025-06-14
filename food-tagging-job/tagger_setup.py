@@ -10,12 +10,13 @@ from fast_food import fast_food_tag
 from high_protein import high_protein_food_tag
 from low_fat import low_fat_food_tag
 from sweet import sweet_tag
+from spicy import spicy_tag
 
 nlp = NLPProcessor()
 food_tagger = Tagger(nlp)
 
 food_tagger.add_tag('vegan', vegan_tag)
-food_tagger.add_tag('veg', veg_tag)
+food_tagger.add_tag('vegetarian', veg_tag)
 food_tagger.add_tag('drink', drink_tag)
 food_tagger.add_tag('indian', indian_cuisine_tag)
 food_tagger.add_tag('chinese', chinese_cuisine_tag)
@@ -24,3 +25,4 @@ food_tagger.add_tag('fast food', fast_food_tag)
 food_tagger.add_tag('high protein', high_protein_food_tag)
 food_tagger.add_tag('low fat', low_fat_food_tag)
 food_tagger.add_tag('sweet', sweet_tag)
+food_tagger.add_tag('spicy', spicy_tag)

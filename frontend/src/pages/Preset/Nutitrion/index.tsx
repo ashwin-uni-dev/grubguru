@@ -9,10 +9,8 @@ interface NutritionModalProps {
 const TAG_OPTIONS = [
     "Low Fat",
     "High Protein",
-    "Low Carb",
     "Vegan",
-    "Vegetarian",
-    "Gluten Free",
+    "Vegetarian"
 ];
 
 const Nutrition = ({ isOpen, onClose }: NutritionModalProps) => {
@@ -47,7 +45,6 @@ const Nutrition = ({ isOpen, onClose }: NutritionModalProps) => {
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">
                 <h2 className="text-xl font-bold tracking-tighter mb-4">Nutrition & Dietary Preferences</h2>
 
-                {/* Calorie Range */}
                 <div className="mb-6">
                     <label className="block font-semibold mb-1">Calorie Range (kcal)</label>
                     <div className="flex gap-4 items-center">
@@ -72,7 +69,6 @@ const Nutrition = ({ isOpen, onClose }: NutritionModalProps) => {
                     </div>
                 </div>
 
-                {/* Nutrition Tags */}
                 <div className="mb-6">
                     <label className="block font-semibold mb-1">Nutrition Tags</label>
                     <div className="flex flex-wrap gap-2">
@@ -85,8 +81,7 @@ const Nutrition = ({ isOpen, onClose }: NutritionModalProps) => {
                                     selectedTags.includes(tag)
                                         ? "bg-purple-500 text-white"
                                         : "border-purple-500 text-purple-500 hover:bg-purple-100"
-                                }`}
-                            >
+                                }`}>
                                 {tag}
                             </button>
                         ))}

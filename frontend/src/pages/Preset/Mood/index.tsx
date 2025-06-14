@@ -6,7 +6,7 @@ interface MoodModalProps {
     onClose: () => void;
 }
 
-const moodOptions = ['Sweet', 'Chinese', 'Indian', 'Italian'];
+const moodOptions = ['Sweet', 'Spicy', 'Chinese', 'Indian', 'Italian'];
 
 const Mood = ({ isOpen, onClose }: MoodModalProps) => {
     const { addOrUpdatePreference } = usePreferences();

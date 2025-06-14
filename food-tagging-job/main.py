@@ -10,7 +10,7 @@ def tag_foods():
         'tags': []
     }
 
-    foods_to_update = food_items.find({})
+    foods_to_update = food_items.find(query)
     update_count = 0
 
     for food in foods_to_update:  
