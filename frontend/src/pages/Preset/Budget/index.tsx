@@ -9,14 +9,21 @@ interface BudgetModalProps {
 const Budget = ({ isOpen, onClose }: BudgetModalProps) => {
     const { addOrUpdatePreference } = usePreferences();
 
-    const [budget, setBudget] = useState<number>(10);
+    const [budget, setBudget] = useState<string | number>(10);
 
     const minBudget = 0;
     const maxBudget = 200;
     const stepBudget = 1;
 
     const handleBudgetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBudget(Number(event.target.value));
+        const value = event.target.value;
+
+        if (value === '') {
+            setBudget('');
+        } else {
+            setBudget(Number(value));
+        }
+
     };
 
     const handleDone = () => {

@@ -10,12 +10,17 @@ export const useFoods = () => {
             .post({})
             .execute();
 
-        setFoods(foods);
+        setFoods((prev: any[] | null) => {
+            if (prev == null) return foods;
+            return prev.concat(
+                foods
+            )
+        });
     }
 
     useEffect(() => {
         fetchFoods();
     }, []);
 
-    return { foods };
+    return { foods, fetchFoods };
 }
